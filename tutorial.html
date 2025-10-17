@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>راهنمای جامع CyberSynth Strudel - استودیوی موسیقی کدنویسی زنده</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/line-awesome.min.css">
+    <style>
+        :root {
+            --primary-cyan: #00ffff;
+            --secondary-magenta: #ff00ff;
+            --accent-yellow: #d948fd;
+            --background-dark: #0a0a1a;
+            --grid-color: #1a2a4a;
+            --panel-bg: rgba(10,10,30,0.9);
+            --glow-cyan: 0 0 20px rgba(0,255,255,0.5);
+            --glow-magenta: 0 0 20px rgba(255,0,255,0.5);
+            --error-red: #ff4444;
+            --success-green: #44ff44;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Vazirmatn', 'Orbitron', monospace;
+            background: linear-gradient(135deg, var(--background-dark) 0%, #1a1a2e 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+
+
+        .cyber-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: -1;
+            animation: grid-move 10s linear infinite;
+        }
+        
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 30px;
+            background: var(--panel-bg);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 15px;
+            box-shadow: var(--glow-cyan);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--primary-cyan) 0%, transparent 70%);
+            opacity: 0.1;
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        header h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            text-shadow: 0 0 20px var(--primary-cyan);
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: var(--accent-yellow);
+            position: relative;
+            z-index: 1;
+        }
+        
+        nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 0.5fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            position: flex;
+            top: 10px;
+            z-index: 100;
+            background: rgba(10, 10, 30, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        nav a {
+            background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-magenta));
+            color: var(--background-dark);
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.2em;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        
+        
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+            transition: left 0.3s;
+        }
+        
+        nav a:hover::before {
+            left: 100%;
+        }
+        
+        nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,255,255,0.5);
+        }
+        
+        section {
+            background: var(--panel-bg);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--glow-cyan);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--secondary-magenta), var(--accent-yellow));
+            border-radius: 15px 15px 0 0;
+        }
+        
+        section:hover {
+            box-shadow: var(--glow-magenta);
+            transform: translateY(-2px);
+        }
+        
+        section h2 {
+            color: var(--accent-yellow);
+            margin-bottom: 20px;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-shadow: 0 0 10px rgba(255,255,0,0.5);
+        }
+        
+        section h3 {
+            color: var(--primary-cyan);
+            margin: 20px 0 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--grid-color);
+            padding-bottom: 10px;
+        }
+        
+        .code-block {
+            background: #000;
+            color: var(--primary-cyan);
+            font-family: 'Fira Code', monospace;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--primary-cyan);
+            margin: 20px 0;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .code-block::before {
+            content: 'کد Strudel';
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--panel-bg);
+            padding: 0 10px;
+            color: var(--accent-yellow);
+            font-size: 12px;
+            font-family: 'Vazirmatn';
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-cyan);
+            color: var(--background-dark);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-yellow);
+        }
+        
+        .panel-demo {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid var(--grid-color);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--primary-cyan);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--secondary-magenta);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255,0,255,0.3);
+        }
+        
+        .feature-card h4 {
+            color: var(--accent-yellow);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        ul, ol {
+            padding-right: 30px;
+            margin: 15px 0;
+        }
+        
+        li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        li::before {
+            content: '▸';
+            position: absolute;
+            right: -20px;
+            color: var(--primary-cyan);
+        }
+        
+        .example {
+            border-right: 4px solid var(--accent-yellow);
+            padding-right: 20px;
+            margin: 20px 0;
+            background: rgba(255,255,0,0.05);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .example h4 {
+            color: var(--accent-yellow);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .tip {
+            background: rgba(68,255,68,0.1);
+            border: 1px solid var(--success-green);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .tip::before {
+            content: '💡 نکته: ';
+            color: var(--success-green);
+            font-weight: bold;
+        }
+        
+        .warning {
+            background: rgba(255,68,68,0.1);
+            border: 1px solid var(--error-red);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .warning::before {
+            content: '⚠️ توجه: ';
+            color: var(--error-red);
+            font-weight: bold;
+        }
+        
+        .keyboard-shortcut {
+            background: rgba(0,0,0,0.5);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            border: 1px solid var(--grid-color);
+            display: inline-block;
+            margin: 0 5px;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px solid var(--primary-cyan);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--panel-bg);
+            border-top: 2px solid var(--primary-cyan);
+            margin-top: 50px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        footer a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: var(--accent-yellow);
+        }
+        
+        .interactive-demo {
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--primary-cyan);
+            margin: 20px 0;
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .demo-btn {
+            background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-magenta));
+            color: var(--background-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .demo-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,255,255,0.5);
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            nav {
+                position: static;
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 20px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-grid"></div>
+    <div class="container">
+        <header>
+            <h1><i class="las la-music"></i> CyberSynth Strudel</h1>
+            <p>راهنمای کامل استودیوی کدنویسی زنده موسیقی الگوریتمی</p>
+        </header>
+
+        <nav>
+            <a href="#start"><i class="las la-rocket" style="font-size: 2rem;"></i><br> شروع سریع</a>
+            <a href="#interface"><i class="las la-desktop" style="font-size: 2rem;"></i><br> رابط کاربری</a>
+            <a href="#strudel"><i class="las la-info-circle" style="font-size: 2rem;"></i><br> مبانی Strudel</a>
+            <a href="#syntax"><i class="las la-code" style="font-size: 2rem;"></i><br> نحو کدنویسی</a>
+            <a href="#sequencer"><i class="las la-th" style="font-size: 2rem;"></i><br> سکوئنسر</a>
+            <a href="#editor"><i class="las la-terminal" style="font-size: 2rem;"></i><br> ویرایشگر کد</a>
+            <a href="#synth"><i class="las la-sliders-h" style="font-size: 2rem;"></i><br> کنترل‌های سینت</a>
+            <a href="#patterns"><i class="las la-database" style="font-size: 2rem;"></i><br> بانک پترن</a>
+            <a href="#examples"><i class="las la-lightbulb" style="font-size: 2rem;"></i><br> مثال‌های کاربردی</a>
+            <a href="#shortcuts"><i class="las la-keyboard" style="font-size: 2rem;"></i><br> میانبرها</a>
+            <a href="#tips"><i class="las la-star" style="font-size: 2rem;"></i><br> نکات حرفه‌ای</a>
+            <a href="#resources"><i class="las la-book" style="font-size: 2rem;"></i><br> منابع</a>
+        </nav>
+
+        <section id="start">
+            <h2><i class="las la-rocket"></i> شروع سریع در 3 دقیقه</h2>
+            <p>CyberSynth Strudel یک استودیوی قدرتمند برای ساخت موسیقی با کد است. در 3 دقیقه اولین موسیقی خود را بسازید!</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><i class="las la-play-circle"></i> گام 1: اولین صدا</h4>
+                    <p>در ویرایشگر کد بنویسید:</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                        <code>sound("bd hh sd hh")</code>
+                    </div>
+                    <p>دکمه <strong>Evaluate</strong> را بزنید یا <kbd>Ctrl+Enter</kbd></p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-layer-group"></i> گام 2: لایه‌بندی</h4>
+                    <p>چند صدا را ترکیب کنید:</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                        <code>stack(
+  sound("bd*2"),
+  sound("hh*8").gain(0.5)
+)</code>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-magic"></i> گام 3: افکت‌ها</h4>
+                    <p>افکت اضافه کنید:</p>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                        <code>sound("bd hh sd hh")
+  .room(0.5)
+  .delay(0.3)</code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip">
+                برای توقف صدا، دکمه <strong>Stop</strong> را بزنید یا <code>hush()</code> را اجرا کنید.
+            </div>
+        </section>
+
+        <section id="interface">
+            <h2><i class="las la-desktop"></i> آشنایی با رابط کاربری</h2>
+            <p>CyberSynth Strudel از چندین پنل تخصصی تشکیل شده که هر کدام برای کار خاصی طراحی شده‌اند:</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><i class="las la-play"></i> نوار کنترل</h4>
+                    <ul>
+                        <li><strong>Play/Pause:</strong> پخش/توقف موسیقی</li>
+                        <li><strong>Stop:</strong> توقف کامل صدا</li>
+                        <li><strong>Undo/Redo:</strong> برگشت/جلو رفتن در تاریخچه</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-th-large"></i> پنل‌های اصلی</h4>
+                    <ul>
+                        <li><strong>Sequencer:</strong> ساخت ریتم گام به گام</li>
+                        <li><strong>Code Editor:</strong> نوشتن کد Strudel</li>
+                        <li><strong>Synth Controls:</strong> تنظیم صدا</li>
+                        <li><strong>Pattern Bank:</strong> ذخیره الگوها</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-save"></i> ذخیره‌سازی</h4>
+                    <ul>
+                        <li>ذخیره خودکار در مرورگر</li>
+                        <li>صادرات/واردات JSON</li>
+                        <li>بانک پترن شخصی</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="strudel">
+            <h2><i class="las la-info-circle"></i> مبانی Strudel</h2>
+            <p>Strudel یک زبان برنامه‌نویسی برای موسیقی الگوریتمی است که در مرورگر اجرا می‌شود.</p>
+            
+            <h3>مفاهیم کلیدی</h3>
+            
+            <div class="panel-demo">
+                <h4><i class="las la-stream"></i> الگوها (Patterns)</h4>
+                <p>الگوها واحدهای اصلی Strudel هستند که در زمان تکرار می‌شوند:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// الگوی ساده
+sound("bd hh sd hh")
+
+// الگوی تکراری
+sound("bd*4") // چهار بار تکرار
+
+// الگوی تصادفی
+sound("{bd sd cp}") // انتخاب تصادفی</code>
+                </div>
+            </div>
+            
+            <div class="panel-demo">
+                <h4><i class="las la-volume-up"></i> صداها (Sounds)</h4>
+                <p>از نمونه‌های صوتی از پیش تعریف شده استفاده کنید:</p>
+                <ul>
+                    <li><code>bd</code> - Bass Drum (کیک)</li>
+                    <li><code>sd</code> - Snare Drum (اسنر)</li>
+                    <li><code>hh</code> - Hi-Hat (های‌هت)</li>
+                    <li><code>cp</code> - Clap (کف)</li>
+                    <li><code>bass</code> - Bass (بیس)</li>
+                </ul>
+                <div class="example">
+                    <h4>ترکیب صداها:</h4>
+                    <div class="code-block">
+                        <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                        <code>// استفاده از شماره نمونه
+sound("bd:1 sd:2 hh:3")
+
+// ترکیب با ویرگول (همزمان)
+sound("bd, hh*2, ~ sd")</code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="panel-demo">
+                <h4><i class="las la-music"></i> نت‌ها (Notes)</h4>
+                <p>برای ملودی‌ها از نت‌های موسیقی استفاده کنید:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// نت‌های ساده
+note("c4 d4 e4 f4 g4")
+
+// با سینتی‌سایزر
+note("c4 e4 g4").sound("sawtooth")
+
+// آکوردها
+note("[c4,e4,g4]").sound("piano")</code>
+                </div>
+            </div>
+        </section>
+
+        <section id="syntax">
+            <h2><i class="las la-code"></i> نحو کدنویسی پیشرفته</h2>
+            
+            <h3>عملگرهای اصلی</h3>
+            
+            <div class="panel-demo">
+                <h4>تکرار و سرعت</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// تکرار با *
+sound("bd*4 hh*8")
+
+// سرعت
+sound("bd hh").fast(2) // دو برابر سریع‌تر
+sound("bd hh").slow(2) // نصف سرعت
+
+// ترکیب
+sound("bd*2 hh*4").fast(1.5)</code>
+                </div>
+            </div>
+            
+            <div class="panel-demo">
+                <h4>الگوهای پیچیده</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// گروه‌بندی با []
+sound("bd [hh hh] sd [hh hh hh]")
+
+// انتخاب با < >
+sound("bd <hh sd cp>") // هر سیکل یکی
+
+// تصادفی با { }
+sound("bd {hh sd cp}") // انتخاب تصادفی
+
+// ترکیبی
+sound("[bd*2, {~ hh}] <sd cp>")</code>
+                </div>
+            </div>
+            
+            <div class="panel-demo">
+                <h4>توابع تبدیل</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// معکوس کردن
+sound("bd hh sd cp").rev()
+
+// جابجایی
+sound("bd hh sd cp").rotate(1)
+
+// اقلیدسی
+sound("bd").euclid(3,8) // 3 ضربه در 8 گام
+
+// ترکیب با jux
+sound("bd hh").jux(rev)</code>
+                </div>
+            </div>
+        </section>
+
+        <section id="sequencer">
+            <h2><i class="las la-th"></i> کار با سکوئنسر پیشرفته</h2>
+            <p>سکوئنسر برای ساخت ریتم‌های دقیق گام به گام طراحی شده است.</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><i class="las la-drum"></i> ترک‌های درام</h4>
+                    <ul>
+                        <li><strong>KICK:</strong> ضربات بیس (کیک)</li>
+                        <li><strong>SNARE:</strong> اسنر درام</li>
+                        <li><strong>HI-HAT:</strong> های‌هت</li>
+                        <li><strong>CLAP:</strong> کف (کلپ)</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-tasks"></i> کنترل‌های ترک</h4>
+                    <ul>
+                        <li><strong>Mute:</strong> بی‌صدا کردن ترک</li>
+                        <li><strong>Solo:</strong> فقط این ترک</li>
+                        <li><strong>Steps:</strong> تعداد گام‌ها (4/8/16)</li>
+                        <li><strong>Randomize:</strong> الگوی تصادفی</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-code"></i> تولید کد</h4>
+                    <ul>
+                        <li><strong>Generate:</strong> تبدیل به کد</li>
+                        <li><strong>Generate All:</strong> همه ترک‌ها</li>
+                        <li><strong>Clear All:</strong> پاک کردن</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="example">
+                <h4>مثال: ساخت ریتم 4/4</h4>
+                <p>1. در ترک KICK گام‌های 1، 5، 9، 13 را فعال کنید</p>
+                <p>2. در ترک HI-HAT همه گام‌ها را فعال کنید</p>
+                <p>3. در ترک SNARE گام‌های 5 و 13 را فعال کنید</p>
+                <p>4. دکمه Generate All را بزنید</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// کد تولید شده:
+stack(
+  s("bd*16").struct("x~~~x~~~x~~~x~~~"),
+  s("hh*16").struct("xxxxxxxxxxxxxxxx"),
+  s("sd*16").struct("~~~~x~~~~~~~x~~~")
+)</code>
+                </div>
+            </div>
+        </section>
+
+        <section id="editor">
+            <h2><i class="las la-terminal"></i> ویرایشگر کد زنده</h2>
+            <p>ویرایشگر کد قلب CyberSynth است که امکان نوشتن و اجرای فوری کد را فراهم می‌کند.</p>
+            
+            <h3>ویژگی‌ها</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><i class="las la-play"></i> اجرای زنده</h4>
+                    <p>کد را بنویسید و با <strong>Evaluate</strong> یا <kbd>Ctrl+Enter</kbd> اجرا کنید</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-save"></i> ذخیره‌سازی</h4>
+                    <p>کد در مرورگر ذخیره می‌شود و با Save/Load قابل مدیریت است</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-history"></i> تاریخچه</h4>
+                    <p>با Undo/Redo می‌توانید تغییرات را برگردانید</p>
+                </div>
+            </div>
+            
+            <div class="tip">
+                از <code>hush()</code> در ابتدای کد استفاده کنید تا صداهای قبلی متوقف شوند.
+            </div>
+        </section>
+
+        <section id="synth">
+            <h2><i class="las la-sliders-h"></i> کنترل‌های سینتی‌سایزر</h2>
+            <p>پارامترهای صوتی را به صورت بصری تنظیم کنید.</p>
+            
+            <div class="panel-demo">
+                <h3>فیلترها</h3>
+                <ul>
+                    <li><strong>LPF (Low Pass Filter):</strong> فیلتر پایین‌گذر - فرکانس‌های بالا را حذف می‌کند</li>
+                    <li><strong>LPQ (Resonance):</strong> رزونانس - تشدید فرکانس فیلتر</li>
+                </ul>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// استفاده از فیلتر
+sound("bass*4")
+  .lpf(800)  // فرکانس فیلتر
+  .lpq(5)    // رزونانس
+
+// فیلتر متحرک
+sound("bass*4")
+  .lpf(sine.range(200,2000).slow(4))</code>
+                </div>
+            </div>
+            
+            <div class="panel-demo">
+                <h3>افکت‌ها</h3>
+                <ul>
+                    <li><strong>Room (Reverb):</strong> ریورب - حس فضا</li>
+                    <li><strong>Delay:</strong> تاخیر - اکوی صدا</li>
+                </ul>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>// اضافه کردن افکت‌ها
+sound("bd hh sd hh")
+  .room(0.5)    // 50% ریورب
+  .delay(0.3)   // 30% دیلی
+  .gain(0.8)    // حجم صدا</code>
+                </div>
+            </div>
+            
+            <div class="tip">
+                دکمه <strong>Apply to Code</strong> پارامترها را به کد فعلی اضافه می‌کند.
+            </div>
+        </section>
+
+        <section id="patterns">
+            <h2><i class="las la-database"></i> بانک پترن</h2>
+            <p>الگوهای خود را ذخیره و مدیریت کنید.</p>
+            
+            <h3>عملیات پترن</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><i class="las la-save"></i> ذخیره پترن</h4>
+                    <ol>
+                        <li>الگو را در ویرایشگر بسازید</li>
+                        <li>نام پترن را وارد کنید</li>
+                        <li>Save Pattern را بزنید</li>
+                    </ol>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-play"></i> پخش و ترکیب</h4>
+                    <ul>
+                        <li><strong>Play:</strong> پخش مستقیم</li>
+                        <li><strong>Mix:</strong> ترکیب با کد فعلی</li>
+                        <li><strong>Load:</strong> بارگذاری کامل</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-file-export"></i> صادرات/واردات</h4>
+                    <ul>
+                        <li>Export All: ذخیره JSON</li>
+                        <li>Import: بارگذاری از فایل</li>
+                        <li>پشتیبان‌گیری آسان</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples">
+            <h2><i class="las la-lightbulb"></i> مثال‌های کاربردی</h2>
+            
+            <div class="example">
+                <h4>1. ریتم تکنو پایه</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>setCps(130/60/4) // BPM 130
+
+stack(
+  sound("bd*4"),                          // کیک 4/4
+  sound("~ sd ~ sd"),                      // اسنر آف‌بیت
+  sound("hh*16").gain(0.3),               // های‌هت سریع
+  sound("~ ~ ~ cp").room(0.5)             // کلپ با ریورب
+)</code>
+                </div>
+                <p>این الگو یک ریتم تکنو کلاسیک با BPM 130 می‌سازد.</p>
+            </div>
+            
+            <div class="example">
+                <h4>2. بیس‌لاین اسید</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>note("c2 c3 eb2 g2")
+  .sound("sawtooth")
+  .lpf(sine.range(200,2000).slow(8))
+  .lpq(10)
+  .delay(0.125)
+  .room(0.2)</code>
+                </div>
+                <p>بیس‌لاین با فیلتر متحرک که صدای اسید تولید می‌کند.</p>
+            </div>
+            
+            <div class="example">
+                <h4>3. درام اند بیس</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>setCps(175/60/4) // BPM 175
+
+stack(
+  sound("bd ~ ~ bd ~ ~ bd ~"),             // کیک سینکوپ
+  sound("~ ~ sd ~ ~ ~ sd ~"),              // اسنر
+  sound("hh*8").gain("{0.2 0.4}"),        // های‌هت داینامیک
+  note("c1 ~ ~ c1 ~ c1 ~ ~")              // ساب بیس
+    .sound("sine").gain(0.8)
+).jux(rev)</code>
+                </div>
+                <p>پترن درام اند بیس با ریتم شکسته و بیس عمیق.</p>
+            </div>
+            
+            <div class="example">
+                <h4>4. آمبینت</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>note("<c4 e4 g4 b4>")
+  .sound("triangle")
+  .slow(4)
+  .room(0.9)
+  .delay(0.5)
+  .gain(0.3)
+  .lpf(600)</code>
+                </div>
+                <p>پد آمبینت آرام با افکت‌های فضایی.</p>
+            </div>
+            
+            <div class="example">
+                <h4>5. گلیچ هاپ</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>stack(
+  sound("bd*2").sometimes(x => x.speed(2)),
+  sound("{~ sd*2 ~ cp}").fast(2),
+  sound("hh*8").sometimesBy(0.3, x => x.speed(-1)),
+  sound("glitch*4").gain(0.2).speed("{1 2 0.5}")
+).every(4, x => x.rev())</code>
+                </div>
+                <p>ریتم گلیچ با تغییرات تصادفی و معکوس شدن هر 4 سیکل.</p>
+            </div>
+            
+            <div class="example">
+                <h4>6. پلی‌ریتم آفریقایی</h4>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">کپی</button>
+                    <code>stack(
+  sound("bd").euclid(3,8),               // الگوی اقلیدسی 3 در 8
+  sound("sd").euclid(5,8),               // الگوی اقلیدسی 5 در 8
+  sound("hh").euclid(7,8).gain(0.3),    // الگوی اقلیدسی 7 در 8
+  sound("cp").euclid(4,8).delay(0.125)  // الگوی اقلیدسی 4 در 8
+)</code>
+                </div>
+                <p>استفاده از ریتم‌های اقلیدسی برای ساخت پلی‌ریتم پیچیده.</p>
+            </div>
+        </section>
+
+        <section id="shortcuts">
+            <h2><i class="las la-keyboard"></i> میانبرهای صفحه‌کلید</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>میانبرهای اصلی</h4>
+                    <ul>
+                        <li><kbd>Ctrl</kbd> + <kbd>Enter</kbd> - اجرای کد</li>
+                        <li><kbd>Ctrl</kbd> + <kbd>.</kbd> - توقف صدا</li>
+                        <li><kbd>Ctrl</kbd> + <kbd>Z</kbd> - Undo</li>
+                        <li><kbd>Ctrl</kbd> + <kbd>Y</kbd> - Redo</li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4>ویرایش کد</h4>
+                    <ul>
+                        <li><kbd>Tab</kbd> - تورفتگی</li>
+                        <li><kbd>Shift</kbd> + <kbd>Tab</kbd> - حذف تورفتگی</li>
+                        <li><kbd>Ctrl</kbd> + <kbd>/</kbd> - کامنت</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="tips">
+            <h2><i class="las la-star"></i> نکات و ترفندهای حرفه‌ای</h2>
+            
+            <div class="tip">
+                از <code>setCps()</code> برای تنظیم BPM استفاده کنید. فرمول: <code>BPM / 60 / 4</code>
+            </div>
+            
+            <div class="tip">
+                از <code>every(n, fn)</code> برای اعمال تغییرات دوره‌ای استفاده کنید. مثلا: <code>sound("bd*4").every(4, x => x.rev())</code>
+            </div>
+            
+            <div class="tip">
+                از <code>sometimes()</code> و <code>sometimesBy(0.5)</code> برای تغییرات تصادفی استفاده کنید.
+            </div>
+            
+            <div class="tip">
+                از <code>stack()</code> برای لایه‌بندی و <code>cat()</code> برای توالی استفاده کنید.
+            </div>
+            
+            <div class="tip">
+                از <code>.jux(fn)</code> برای اعمال تابع روی کانال راست استفاده کنید. مثل: <code>.jux(rev)</code>
+            </div>
+            
+            <div class="warning">
+                همیشه از <code>hush()</code> قبل از کد جدید استفاده کنید تا صداهای قبلی متوقف شوند.
+            </div>
+        </section>
+
+        <section id="resources">
+            <h2><i class="las la-book"></i> منابع و لینک‌های مفید</h2>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4><i class="las la-globe"></i> منابع آنلاین</h4>
+                    <ul>
+                        <li><a href="https://strudel.cc" target="_blank">وبسایت رسمی Strudel</a></li>
+                        <li><a href="https://strudel.cc/learn" target="_blank">آموزش‌های Strudel</a></li>
+                        <li><a href="https://strudel.cc/workshop" target="_blank">کارگاه‌های آموزشی</a></li>
+                        <li><a href="https://discord.gg/strudel" target="_blank">دیسکورد Strudel</a></li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-code-branch"></i> کد منبع</h4>
+                    <ul>
+                        <li><a href="https://github.com/tidalcycles/strudel" target="_blank">GitHub Strudel</a></li>
+                        <li><a href="https://github.com/tidalcycles/dirt-samples" target="_blank">بانک صدا Dirt</a></li>
+                    </ul>
+                </div>
+                
+                <div class="feature-card">
+                    <h4><i class="las la-video"></i> ویدیوهای آموزشی</h4>
+                    <ul>
+                        <li><a href="https://youtube.com/strudel" target="_blank">کانال YouTube</a></li>
+                        <li><a href="#" target="_blank">Live Coding Sessions</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>
+                <i class="las la-code"></i> ساخته شده با عشق به موسیقی الگوریتمی
+                <br>
+                <a href="https://strudel.cc" target="_blank">Strudel</a> | 
+                <a href="https://tidalcycles.org" target="_blank">TidalCycles</a> | 
+                <a href="#" target="_blank">GitHub</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // تابع کپی کد
+        function copyCode(btn) {
+            const codeBlock = btn.parentElement.querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'کپی شد!';
+                btn.style.background = '#44ff44';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+        
+        // اسکرول نرم برای لینک‌ها
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // انیمیشن برای ورود عناصر
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.5s, transform 0.5s';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
