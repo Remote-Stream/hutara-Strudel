@@ -265,6 +265,24 @@
             grid-template-columns: repeat(auto-fit, minmax(min(80px, 25vw), 1fr));
             gap: clamp(5px, 1vw, 8px);
         }
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--panel-bg);
+            border-top: 2px solid var(--primary-cyan);
+            margin-top: 50px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        footer a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: var(--accent-yellow);
+        }        
         .checkbox-item {
             background: rgba(0,0,0,0.4);
             padding: clamp(5px, 1vw, 8px);
@@ -531,6 +549,14 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
         <div id="notification" class="notification">
             <span id="notification-text">Ready to create music!</span>
         </div>
+        <footer>
+            <p>
+                <i class="las la-code-branch"></i> ساخته شده با عشق به موسیقی 
+                <br>
+                <a href="./tutorial.html" target="_blank">Tutorial</a> | 
+                <a href="#" target="_blank">GitHub</a>
+            </p>
+        </footer>        
     </div>
     <script>
         /**
