@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberSynth Strudel - Advanced Live Coding Studio</title>
-    <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
+    <script src="https://unpkg.com/@strudel/web@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- اضافه کردن Line Awesome CSS -->
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <style>
         :root {
             --primary-cyan: #00ffff;
@@ -30,6 +32,7 @@
             color: var(--primary-cyan);
             min-height: 100vh;
             overflow-x: hidden;
+            font-size: clamp(14px, 2.5vw, 16px);
         }
         .cyber-grid {
             position: fixed;
@@ -40,47 +43,51 @@
             background-image:
                 linear-gradient(rgba(0,255,255,0.1) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
+            background-size: min(5vw, 50px) min(5vw, 50px);
             pointer-events: none;
             z-index: -1;
         }
         .container {
-            max-width: 1200px;
+            max-width: min(90vw, 1400px);
             margin: 0 auto;
-            padding: 20px;
+            padding: clamp(10px, 2vw, 20px);
         }
         header {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 15px;
+            margin-bottom: clamp(10px, 2vw, 20px);
+            padding: clamp(10px, 2vw, 15px);
             background: var(--panel-bg);
             border: 2px solid var(--primary-cyan);
             border-radius: 10px;
             box-shadow: var(--glow-cyan);
         }
         header h1 {
-            font-size: 2rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             font-weight: 900;
             text-shadow: 0 0 10px var(--primary-cyan);
+        }
+        header p {
+            font-size: clamp(0.8rem, 2vw, 1rem);
         }
         .status-bar {
             display: flex;
             justify-content: flex-end;
             background: rgba(0,0,0,0.7);
-            padding: 10px;
+            padding: clamp(5px, 1.5vw, 10px);
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: clamp(10px, 2vw, 20px);
+            font-size: clamp(0.8rem, 2vw, 1rem);
         }
         .main-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(min(350px, 85vw), 1fr));
+            gap: clamp(10px, 2vw, 15px);
         }
         .panel {
             background: var(--panel-bg);
             border: 2px solid var(--primary-cyan);
             border-radius: 10px;
-            padding: 15px;
+            padding: clamp(10px, 2vw, 15px);
             box-shadow: var(--glow-cyan);
             transition: box-shadow 0.3s ease;
         }
@@ -89,20 +96,22 @@
         }
         .panel h2 {
             color: var(--accent-yellow);
-            margin-bottom: 10px;
+            margin-bottom: clamp(5px, 1.5vw, 10px);
             font-weight: 700;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
         }
         .cyber-btn {
             background: linear-gradient(45deg, var(--primary-cyan), var(--secondary-magenta));
             color: var(--background-dark);
             border: none;
-            padding: 10px 20px;
+            padding: clamp(8px, 1.5vw, 10px) clamp(15px, 2vw, 20px);
             cursor: pointer;
             border-radius: 8px;
             font-family: 'Orbitron', monospace;
             font-weight: 700;
             text-transform: uppercase;
             transition: transform 0.2s ease;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
         }
         .cyber-btn:hover {
             transform: scale(1.05);
@@ -114,61 +123,69 @@
         .cyber-btn.active {
             background: var(--secondary-magenta);
         }
+        .cyber-btn i {
+            margin-right: 5px;
+        }
         .code-editor-panel {
             grid-column: 1 / -1;
         }
         .code-editor {
             width: 100%;
-            height: 360px;
+            height: clamp(200px, 40vh, 400px);
             background: rgba(0,0,0,0.8);
             color: var(--primary-cyan);
             font-family: 'Fira Code', monospace;
-            font-size: 14px;
-            padding: 10px;
+            font-size: clamp(12px, 2vw, 14px);
+            padding: clamp(8px, 1.5vw, 10px);
             border: 2px solid var(--primary-cyan);
             border-radius: 8px;
             resize: vertical;
         }
         .code-controls {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            flex-wrap: wrap;
+            gap: clamp(5px, 1vw, 10px);
+            margin-top: clamp(5px, 1vw, 10px);
         }
         .transport {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 10px;
-            padding: 15px;
+            gap: clamp(5px, 1vw, 10px);
+            padding: clamp(10px, 2vw, 15px);
             background: rgba(0,0,0,0.5);
             border-radius: 10px;
-            margin: 15px 0;
+            margin: clamp(10px, 2vw, 15px) 0;
         }
         .sequencer-container {
             grid-column: 1 / -1;
         }
         .track-container {
-            margin-bottom: 15px;
-            padding: 10px;
+            margin-bottom: clamp(10px, 2vw, 15px);
+            padding: clamp(8px, 1.5vw, 10px);
             background: rgba(0,0,0,0.3);
             border-radius: 8px;
         }
         .track-header {
             display: flex;
+            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: clamp(5px, 1vw, 10px);
+            gap: clamp(5px, 1vw, 10px);
         }
         .track-name {
             color: var(--accent-yellow);
             font-weight: 700;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
         }
         .pattern-grid {
             display: grid;
             grid-template-columns: repeat(16, 1fr);
-            gap: 3px;
+            gap: clamp(2px, 0.5vw, 3px);
         }
         .step {
-            height: 35px;
+            height: clamp(25px, 4vw, 35px);
             background: rgba(0,50,100,0.3);
             border: 2px solid var(--grid-color);
             border-radius: 5px;
@@ -177,7 +194,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: clamp(10px, 1.5vw, 12px);
         }
         .step:hover, .step:focus {
             border-color: var(--primary-cyan);
@@ -187,20 +204,39 @@
             background: var(--primary-cyan);
             color: var(--background-dark);
         }
+        .track-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: clamp(5px, 1vw, 10px);
+            margin-top: clamp(5px, 1vw, 10px);
+        }
+        .step-selector {
+            background: rgba(0,0,0,0.8);
+            color: var(--primary-cyan);
+            border: 1px solid var(--primary-cyan);
+            padding: clamp(5px, 1vw, 8px);
+            border-radius: 5px;
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
         .synth-controls {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(min(120px, 40vw), 1fr));
+            gap: clamp(8px, 1.5vw, 10px);
         }
         .control-group {
             background: rgba(0,0,0,0.3);
-            padding: 10px;
+            padding: clamp(8px, 1.5vw, 10px);
             border-radius: 8px;
+        }
+        .control-group h3 {
+            font-size: clamp(0.9rem, 2vw, 1rem);
         }
         .slider-container label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: clamp(3px, 1vw, 5px);
             color: var(--primary-cyan);
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
         }
         .slider-container input[type="range"] {
             width: 100%;
@@ -209,42 +245,61 @@
         }
         .slider-container input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 15px;
-            height: 15px;
+            width: clamp(12px, 2vw, 15px);
+            height: clamp(12px, 2vw, 15px);
             background: var(--primary-cyan);
             border-radius: 50%;
             cursor: pointer;
         }
         .slider-value {
-            font-size: 12px;
+            font-size: clamp(10px, 1.5vw, 12px);
             color: var(--accent-yellow);
         }
         .presets-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(min(100px, 30vw), 1fr));
+            gap: clamp(5px, 1vw, 8px);
         }
         .mix-checkboxes {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(auto-fit, minmax(min(80px, 25vw), 1fr));
+            gap: clamp(5px, 1vw, 8px);
         }
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: var(--panel-bg);
+            border-top: 2px solid var(--primary-cyan);
+            margin-top: 50px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        footer a {
+            color: var(--primary-cyan);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: var(--accent-yellow);
+        }        
         .checkbox-item {
             background: rgba(0,0,0,0.4);
-            padding: 8px;
+            padding: clamp(5px, 1vw, 8px);
             border-radius: 5px;
         }
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: clamp(10px, 2vw, 20px);
+            right: clamp(10px, 2vw, 20px);
             background: var(--panel-bg);
             border: 2px solid var(--primary-cyan);
-            padding: 10px 15px;
+            padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 15px);
             border-radius: 8px;
             box-shadow: var(--glow-cyan);
-            transform: translateX(300px);
+            transform: translateX(120%);
             transition: transform 0.3s ease;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
         }
         .notification.show {
             transform: translateX(0);
@@ -257,6 +312,14 @@
             border-color: var(--success-green);
             box-shadow: 0 0 15px rgba(68,255,68,0.5);
         }
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: repeat(auto-fit, minmax(min(200px, 45vw), 1fr));
+            }
+            .pattern-grid {
+                grid-template-columns: repeat(12, 1fr);
+            }
+        }
         @media (max-width: 768px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -264,8 +327,30 @@
             .pattern-grid {
                 grid-template-columns: repeat(8, 1fr);
             }
-            header h1 {
-                font-size: 1.5rem;
+            .synth-controls {
+                grid-template-columns: 1fr;
+            }
+            .code-editor {
+                height: clamp(150px, 30vh, 300px);
+            }
+        }
+        @media (max-width: 480px) {
+            .pattern-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .cyber-btn {
+                padding: clamp(6px, 1.5vw, 8px) clamp(10px, 2vw, 12px);
+                font-size: clamp(0.7rem, 2vw, 0.8rem);
+            }
+            .container {
+                padding: clamp(5px, 1.5vw, 10px);
+            }
+            .panel {
+                padding: clamp(8px, 1.5vw, 10px);
+            }
+            .track-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -274,85 +359,122 @@
     <div class="cyber-grid"></div>
     <div class="container">
         <header>
-            <h1>🎛️ CyberSynth Strudel</h1>
+            <h1><i class="las la-sliders-h"></i> CyberSynth Strudel</h1>
             <p>Advanced Live Coding Music Studio</p>
         </header>
         <div class="status-bar">
-            <span>Status: <span id="audio-status">🔊 Ready</span></span>
+            <span>Status: <span id="audio-status"><i class="las la-volume-up"></i> Ready</span></span>
         </div>
         <div class="transport">
-            <button class="cyber-btn" id="play-btn" aria-label="Play or pause music">▶️ Play</button>
-            <button class="cyber-btn" id="stop-btn" aria-label="Stop music">⏹️ Stop</button>
+            <button class="cyber-btn" id="play-btn" aria-label="Play or pause music"><i class="las la-play" style="font-size: 1.5rem;"></i> Play</button>
+            <button class="cyber-btn" id="stop-btn" aria-label="Stop playback"><i class="las la-stop" style="font-size: 1.5rem;"></i> Stop</button>
+            <button class="cyber-btn" id="undo-btn" aria-label="Undo last action"><i class="las la-undo" style="font-size: 1.5rem;"></i> Undo</button>
+            <button class="cyber-btn" id="redo-btn" aria-label="Redo last action"><i class="las la-redo" style="font-size: 1.5rem;"></i> Redo</button>
         </div>
         <div class="main-grid">
             <div class="panel sequencer-container">
-                <h2>🎵 Advanced Sequencer</h2>
+                <h2><i class="las la-music"></i> Advanced Sequencer</h2>
                 <div class="track-container" id="bd-track">
                     <div class="track-header">
                         <span class="track-name">KICK</span>
                         <div>
-                            <button class="cyber-btn" id="mute-bd" aria-label="Mute kick track">Mute</button>
-                            <button class="cyber-btn" id="solo-bd" aria-label="Solo kick track">Solo</button>
+                            <button class="cyber-btn" id="mute-bd" aria-label="Mute kick track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-bd" aria-label="Solo kick track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="bd-pattern"></div>
+                    <div class="track-controls">
+                        <select class="step-selector" id="bd-steps" aria-label="Select number of steps for kick">
+                            <option value="4">4 Steps</option>
+                            <option value="8">8 Steps</option>
+                            <option value="16" selected>16 Steps</option>
+                        </select>
+                        <button class="cyber-btn" id="random-bd" aria-label="Randomize kick track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-bd" aria-label="Generate code for kick track"><i class="las la-code"></i> Generate</button>
+                    </div>
                 </div>
                 <div class="track-container" id="sd-track">
                     <div class="track-header">
                         <span class="track-name">SNARE</span>
                         <div>
-                            <button class="cyber-btn" id="mute-sd" aria-label="Mute snare track">Mute</button>
-                            <button class="cyber-btn" id="solo-sd" aria-label="Solo snare track">Solo</button>
+                            <button class="cyber-btn" id="mute-sd" aria-label="Mute snare track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-sd" aria-label="Solo snare track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="sd-pattern"></div>
+                    <div class="track-controls">
+                        <select class="step-selector" id="sd-steps" aria-label="Select number of steps for snare">
+                            <option value="4">4 Steps</option>
+                            <option value="8">8 Steps</option>
+                            <option value="16" selected>16 Steps</option>
+                        </select>
+                        <button class="cyber-btn" id="random-sd" aria-label="Randomize snare track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-sd" aria-label="Generate code for snare track"><i class="las la-code"></i> Generate</button>
+                    </div>
                 </div>
                 <div class="track-container" id="hh-track">
                     <div class="track-header">
                         <span class="track-name">HI-HAT</span>
                         <div>
-                            <button class="cyber-btn" id="mute-hh" aria-label="Mute hi-hat track">Mute</button>
-                            <button class="cyber-btn" id="solo-hh" aria-label="Solo hi-hat track">Solo</button>
+                            <button class="cyber-btn" id="mute-hh" aria-label="Mute hi-hat track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-hh" aria-label="Solo hi-hat track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="hh-pattern"></div>
+                    <div class="track-controls">
+                        <select class="step-selector" id="hh-steps" aria-label="Select number of steps for hi-hat">
+                            <option value="4">4 Steps</option>
+                            <option value="8">8 Steps</option>
+                            <option value="16" selected>16 Steps</option>
+                        </select>
+                        <button class="cyber-btn" id="random-hh" aria-label="Randomize hi-hat track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-hh" aria-label="Generate code for hi-hat track"><i class="las la-code"></i> Generate</button>
+                    </div>
                 </div>
                 <div class="track-container" id="cp-track">
                     <div class="track-header">
                         <span class="track-name">CLAP</span>
                         <div>
-                            <button class="cyber-btn" id="mute-cp" aria-label="Mute clap track">Mute</button>
-                            <button class="cyber-btn" id="solo-cp" aria-label="Solo clap track">Solo</button>
+                            <button class="cyber-btn" id="mute-cp" aria-label="Mute clap track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-cp" aria-label="Solo clap track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="cp-pattern"></div>
+                    <div class="track-controls">
+                        <select class="step-selector" id="cp-steps" aria-label="Select number of steps for clap">
+                            <option value="4">4 Steps</option>
+                            <option value="8">8 Steps</option>
+                            <option value="16" selected>16 Steps</option>
+                        </select>
+                        <button class="cyber-btn" id="random-cp" aria-label="Randomize clap track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-cp" aria-label="Generate code for clap track"><i class="las la-code"></i> Generate</button>
+                    </div>
                 </div>
                 <div class="code-controls">
-                    <button class="cyber-btn" id="sequencer-random" aria-label="Randomize sequencer">🎲 Randomize</button>
-                    <button class="cyber-btn" id="sequencer-clear" aria-label="Clear sequencer">🧹 Clear</button>
-                    <button class="cyber-btn" id="sequencer-generate" aria-label="Generate code from sequencer">📋 Generate Code</button>
-                </div>
-            </div>        
-        <div class="panel code-editor-panel">
-            <h2>💻 Live Code Editor</h2>
-            <textarea id="code-editor" class="code-editor" spellcheck="false" aria-label="Live code editor for music patterns" placeholder="// Write Strudel code, e.g.:
-s('bd*2, hh(3,8)').jux(rev)
-note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
-            <div class="code-controls">
-                <div>
-                    <button class="cyber-btn" id="evaluate-btn" aria-label="Evaluate code">▶️ Evaluate</button>
-                    <button class="cyber-btn" id="stop-code-btn" aria-label="Stop code playback">⏹️ Stop</button>
-                    <button class="cyber-btn" id="clear-code-btn" aria-label="Clear code editor">🧹 Clear</button>
-                </div>
-                <div>
-                    <button class="cyber-btn" id="save-code-btn" aria-label="Save code">💾 Save</button>
-                    <button class="cyber-btn" id="load-code-btn" aria-label="Load code">📂 Load</button>
+                    <button class="cyber-btn" id="sequencer-random" aria-label="Randomize all sequencer tracks"><i class="las la-dice" style="font-size: 1.5rem;"></i> Randomize All</button>
+                    <button class="cyber-btn" id="sequencer-clear" aria-label="Clear all sequencer tracks"><i class="las la-broom"></i> Clear All</button>
+                    <button class="cyber-btn" id="sequencer-generate" aria-label="Generate code from all sequencer tracks"><i class="las la-code" ></i> Generate All</button>
                 </div>
             </div>
-        </div>
-
+            <div class="panel code-editor-panel">
+                <h2><i class="las la-terminal"></i> Live Code Editor</h2>
+                <textarea id="code-editor" class="code-editor" spellcheck="false" aria-label="Live code editor for music patterns" placeholder="// Write Strudel code, e.g.:
+s('bd*2, hh(3,8)').jux(rev)
+note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
+                <div class="code-controls">
+                    <div>
+                        <button class="cyber-btn" id="evaluate-btn" aria-label="Evaluate code"><i class="las la-play" style="font-size: 1.5rem;"></i> Evaluate</button>
+                        <button class="cyber-btn" id="stop-code-btn" aria-label="Stop code playback"><i class="las la-stop" style="font-size: 1.5rem;" ></i> Stop</button>
+                        <button class="cyber-btn" id="clear-code-btn" aria-label="Clear code editor"><i class="las la-broom"></i> Clear</button>
+                    </div>
+                    <div>
+                        <button class="cyber-btn" id="save-code-btn" aria-label="Save code"><i class="las la-save"></i> Save</button>
+                        <button class="cyber-btn" id="load-code-btn" aria-label="Load code"><i class="las la-folder-open"></i> Load</button>
+                    </div>
+                </div>
+            </div>
             <div class="panel">
-                <h2>🎛️ Synth Controls</h2>
+                <h2><i class="las la-sliders-h"></i> Synth Controls</h2>
                 <div class="synth-controls">
                     <div class="control-group">
                         <h3>Filter</h3>
@@ -381,50 +503,60 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                         </div>
                     </div>
                 </div>
-                <button class="cyber-btn" id="apply-synth" aria-label="Apply synth parameters to code">Apply to Code</button>
+                <button class="cyber-btn" id="apply-synth" aria-label="Apply synth parameters to code"><i class="las la-check"></i> Apply to Code</button>
             </div>
             <div class="panel">
-                <h2>🔀 Pattern Mix</h2>
+                <h2><i class="las la-random"></i> Pattern Mix</h2>
                 <div class="mix-checkboxes" id="mix-checkboxes"></div>
                 <div class="code-controls">
-                    <button class="cyber-btn" id="mix-combine" aria-label="Combine selected patterns">Combine (Stack)</button>
-                    <button class="cyber-btn" id="mix-random" aria-label="Select 3 random patterns">Random 3</button>
+                    <button class="cyber-btn" id="mix-combine" aria-label="Combine selected patterns"><i class="las la-layer-group"></i> Combine (Stack)</button>
+                    <button class="cyber-btn" id="mix-random" aria-label="Select 3 random patterns"><i class="las la-dice-three"></i> Random 3</button>
                 </div>
             </div>
             <div class="panel">
-                <h2>📋 Presets</h2>
+                <h2><i class="las la-bookmark"></i> Presets</h2>
                 <div class="presets-grid">
-                    <button class="cyber-btn" id="preset-a" aria-label="Load preset A: Bass Drum">A: Bass Drum</button>
-                    <button class="cyber-btn" id="preset-b" aria-label="Load preset B: Double Beat">B: Double Beat</button>
-                    <button class="cyber-btn" id="preset-c" aria-label="Load preset C: With Snare">C: With Snare</button>
-                    <button class="cyber-btn" id="preset-d" aria-label="Load preset D: Melody">D: Melody</button>
-                    <button class="cyber-btn" id="preset-e" aria-label="Load preset E: Hats">E: Hats</button>
-                    <button class="cyber-btn" id="preset-f" aria-label="Load preset F: Combined">F: Combined</button>
-                    <button class="cyber-btn" id="preset-g" aria-label="Load preset G: Bass Line">G: Bass Line</button>
-                    <button class="cyber-btn" id="preset-h" aria-label="Load preset H: Percussion">H: Percussion</button>
-                    <button class="cyber-btn" id="preset-i" aria-label="Load preset I: Arpeggio">I: Arpeggio</button>
-                    <button class="cyber-btn" id="preset-j" aria-label="Load preset J: Effects">J: Effects</button>
-                    <button class="cyber-btn" id="preset-k" aria-label="Load preset K: Synth Wave">K: Synth Wave</button>
-                    <button class="cyber-btn" id="preset-l" aria-label="Load preset L: Electronic Drum">L: Electronic Drum</button>
+                    <button class="cyber-btn" id="preset-a" aria-label="Load preset A: Bass Drum"><i class="las la-drum"></i> A: Bass Drum</button>
+                    <button class="cyber-btn" id="preset-b" aria-label="Load preset B: Double Beat"><i class="las la-drum"></i> B: Double Beat</button>
+                    <button class="cyber-btn" id="preset-c" aria-label="Load preset C: With Snare"><i class="las la-drum"></i> C: With Snare</button>
+                    <button class="cyber-btn" id="preset-d" aria-label="Load preset D: Melody"><i class="las la-music"></i> D: Melody</button>
+                    <button class="cyber-btn" id="preset-e" aria-label="Load preset E: Hats"><i class="las la-drum"></i> E: Hats</button>
+                    <button class="cyber-btn" id="preset-f" aria-label="Load preset F: Combined"><i class="las la-layer-group"></i> F: Combined</button>
+                    <button class="cyber-btn" id="preset-g" aria-label="Load preset G: Bass Line"><i class="las la-drum"></i> G: Bass Line</button>
+                    <button class="cyber-btn" id="preset-h" aria-label="Load preset H: Percussion"><i class="las la-drum"></i> H: Percussion</button>
+                    <button class="cyber-btn" id="preset-i" aria-label="Load preset I: Arpeggio"><i class="las la-music"></i> I: Arpeggio</button>
+                    <button class="cyber-btn" id="preset-j" aria-label="Load preset J: Effects"><i class="las la-sliders-h"></i> J: Effects</button>
+                    <button class="cyber-btn" id="preset-k" aria-label="Load preset K: Synth Wave"><i class="las la-wave-square"></i> K: Synth Wave</button>
+                    <button class="cyber-btn" id="preset-l" aria-label="Load preset L: Electronic Drum"><i class="las la-drum"></i> L: Electronic Drum</button>
                 </div>
             </div>
+            </div>
             <div class="panel">
-                <h2>💾 Pattern Bank</h2>
-                <div style="margin-bottom: 10px;">
-                    <input type="text" id="pattern-name" placeholder="Pattern Name..." style="background: rgba(0,0,0,0.8); color: var(--primary-cyan); border: 1px solid var(--primary-cyan); padding: 8px; width: 100%;" aria-label="Pattern name input">
-                    <button class="cyber-btn" id="save-pattern-btn" aria-label="Save pattern">Save Pattern</button>
+                <h2><i class="las la-database"></i> Pattern Bank</h2>
+                <div style="margin-bottom: clamp(15px, 1vw, 10px); ">
+                    <input type="text" id="pattern-name" placeholder="Pattern Name..." style="background: rgba(0,0,0,0.8); color: var(--primary-cyan); border: 1px solid var(--primary-cyan); padding: clamp(6px, 1.5vw, 8px); width: 100%; font-size: clamp(0.8rem, 2vw, 0.9rem); margin-bottom: clamp(15px, 1vw, 10px)" aria-label="Pattern name input">
+                    <button class="cyber-btn " id="save-pattern-btn" aria-label="Save pattern"><i class="las la-save " style="font-size: 1.5rem;"></i> Save Pattern</button>
                 </div>
-                <div id="pattern-bank" style="max-height: 150px; overflow-y: auto;"></div>
-                <div style="margin-top: 10px;">
-                    <button class="cyber-btn" id="export-patterns-btn" aria-label="Export all patterns">📤 Export All</button>
-                    <button class="cyber-btn" id="import-patterns-btn" aria-label="Import patterns">📥 Import</button>
+                <div id="pattern-bank" style="max-height: clamp(300px, 50vh, 350px); overflow-y: auto;"></div>
+                <div style="margin-top: clamp(5px, 1vw, 10px); ">
+                    <button class="cyber-btn" id="export-patterns-btn" aria-label="Export all patterns"><i class="las la-file-export"></i> Export All</button>
+                    <button class="cyber-btn" id="import-patterns-btn" aria-label="Import patterns"><i class="las la-file-import"></i> Import</button>
                     <input type="file" id="import-file" accept=".json" style="display: none;" aria-label="Import pattern file">
                 </div>
+            </div>
             </div>
         </div>
         <div id="notification" class="notification">
             <span id="notification-text">Ready to create music!</span>
         </div>
+        <footer>
+            <p>
+                <i class="las la-code-branch"></i> ساخته شده با عشق به موسیقی 
+                <br>
+                <a href="./tutorial.html" target="_blank">Tutorial</a> | 
+                <a href="#" target="_blank">GitHub</a>
+            </p>
+        </footer>        
     </div>
     <script>
         /**
@@ -442,10 +574,10 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     cp: Array(16).fill(false)
                 };
                 this.trackStates = {
-                    bd: { muted: false, solo: false },
-                    sd: { muted: false, solo: false },
-                    hh: { muted: false, solo: false },
-                    cp: { muted: false, solo: false }
+                    bd: { muted: false, solo: false, steps: 16 },
+                    sd: { muted: false, solo: false, steps: 16 },
+                    hh: { muted: false, solo: false, steps: 16 },
+                    cp: { muted: false, solo: false, steps: 16 }
                 };
                 this.synthParams = {
                     lpf: 800,
@@ -455,9 +587,13 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 };
                 this.savedPatterns = new Map();
                 this.strudelReady = false;
+                this.history = [];
+                this.historyIndex = -1;
+                this.maxHistory = 50;
+                // Store Strudel API references
+                this.strudelAPI = null;
                 this.init();
             }
-
             /**
              * Initializes the application, setting up Strudel, sequencer, and event listeners.
              * @async
@@ -469,76 +605,161 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.setupSequencer();
                     this.setupEventListeners();
                     this.loadSavedData();
+                    this.saveToHistory();
                     this.showNotification('CyberSynth Strudel initialized!', 'success');
                 } catch (error) {
                     console.error('Initialization failed:', error);
                     this.showNotification('Failed to initialize. Check console for details.', 'error');
                 }
             }
-
             /**
              * Initializes Strudel with sample preloading and default BPM.
              * @async
              */
             async initStrudel() {
                 try {
+                    // Get the global Strudel API
+                    const { initStrudel, samples, setCps } = window.strudel;
+                    
+                    // Store API reference
+                    this.strudelAPI = window.strudel;
+                    
                     await initStrudel({
                         prebake: async () => {
                             try {
                                 await samples('github:tidalcycles/dirt-samples');
                             } catch (error) {
-                                throw new Error('Failed to load samples: ' + error.message);
+                                console.warn('Could not load default samples:', error);
+                                // Continue even if samples fail to load
                             }
                         }
                     });
-                    if (typeof setCps === 'function') {
-                        setCps(120 / 60 / 4); // Set default BPM to 120
+                    
+                    // Set default BPM to 120
+                    if (setCps) {
+                        setCps(120 / 60 / 4);
                     }
                 } catch (error) {
                     throw new Error('Strudel initialization failed: ' + error.message);
                 }
             }
-
+            /**
+             * Saves the current state to history for undo/redo.
+             */
+            saveToHistory() {
+                const state = JSON.parse(JSON.stringify({
+                    sequencerState: this.sequencerState,
+                    trackStates: this.trackStates,
+                    code: document.getElementById('code-editor').value
+                }));
+                if (this.historyIndex < this.history.length - 1) {
+                    this.history.splice(this.historyIndex + 1);
+                }
+                this.history.push(state);
+                if (this.history.length > this.maxHistory) {
+                    this.history.shift();
+                }
+                this.historyIndex = this.history.length - 1;
+                this.updateUndoRedoButtons();
+            }
+            /**
+             * Updates the disabled state of undo/redo buttons.
+             */
+            updateUndoRedoButtons() {
+                document.getElementById('undo-btn').disabled = this.historyIndex <= 0;
+                document.getElementById('redo-btn').disabled = this.historyIndex >= this.history.length - 1;
+            }
+            /**
+             * Undoes the last action.
+             */
+            undo() {
+                if (this.historyIndex <= 0) {
+                    this.showNotification('Nothing to undo', 'error');
+                    return;
+                }
+                this.historyIndex--;
+                this.restoreState(this.history[this.historyIndex]);
+                this.showNotification('Undo successful', 'success');
+            }
+            /**
+             * Redoes the last undone action.
+             */
+            redo() {
+                if (this.historyIndex >= this.history.length - 1) {
+                    this.showNotification('Nothing to redo', 'error');
+                    return;
+                }
+                this.historyIndex++;
+                this.restoreState(this.history[this.historyIndex]);
+                this.showNotification('Redo successful', 'success');
+            }
+            /**
+             * Restores a state from history.
+             * @param {Object} state - State to restore.
+             */
+            restoreState(state) {
+                this.sequencerState = JSON.parse(JSON.stringify(state.sequencerState));
+                this.trackStates = JSON.parse(JSON.stringify(state.trackStates));
+                document.getElementById('code-editor').value = state.code || '';
+                ['bd', 'sd', 'hh', 'cp'].forEach(track => {
+                    document.getElementById(`${track}-steps`).value = this.trackStates[track].steps;
+                    this.updateSequencerTrack(track);
+                    document.getElementById(`mute-${track}`).classList.toggle('active', this.trackStates[track].muted);
+                    document.getElementById(`mute-${track}`).setAttribute('aria-pressed', this.trackStates[track].muted);
+                    document.getElementById(`solo-${track}`).classList.toggle('active', this.trackStates[track].solo);
+                    document.getElementById(`solo-${track}`).setAttribute('aria-pressed', this.trackStates[track].solo);
+                });
+                this.updateUndoRedoButtons();
+                this.saveToLocalStorage();
+            }
             /**
              * Sets up the sequencer UI for all tracks.
              */
             setupSequencer() {
                 ['bd', 'sd', 'hh', 'cp'].forEach(track => {
-                    const container = document.getElementById(`${track}-pattern`);
-                    container.innerHTML = '';
-                    for (let i = 0; i < 16; i++) {
-                        const step = document.createElement('div');
-                        step.className = 'step';
-                        step.textContent = i + 1;
-                        step.dataset.track = track;
-                        step.dataset.step = i;
-                        step.setAttribute('role', 'button');
-                        step.setAttribute('aria-label', `Step ${i + 1} for ${track}`);
-                        step.tabIndex = 0;
-                        step.addEventListener('click', () => this.toggleStep(track, i));
-                        step.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                this.toggleStep(track, i);
-                                e.preventDefault();
-                            }
-                        });
-                        container.appendChild(step);
-                    }
-                    this.updateSequencerUI(track);
+                    this.updateSequencerTrack(track);
                 });
             }
-
+            /**
+             * Updates the sequencer UI for a specific track based on step count.
+             * @param {string} track - Track name.
+             */
+            updateSequencerTrack(track) {
+                const container = document.getElementById(`${track}-pattern`);
+                const stepCount = this.trackStates[track].steps;
+                container.innerHTML = '';
+                container.style.gridTemplateColumns = `repeat(${stepCount}, 1fr)`;
+                for (let i = 0; i < stepCount; i++) {
+                    const step = document.createElement('div');
+                    step.className = 'step';
+                    step.textContent = i + 1;
+                    step.dataset.track = track;
+                    step.dataset.step = i;
+                    step.setAttribute('role', 'button');
+                    step.setAttribute('aria-label', `Step ${i + 1} for ${track}`);
+                    step.tabIndex = 0;
+                    step.addEventListener('click', () => this.toggleStep(track, i));
+                    step.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            this.toggleStep(track, i);
+                            e.preventDefault();
+                        }
+                    });
+                    container.appendChild(step);
+                }
+                this.updateSequencerUI(track);
+            }
             /**
              * Toggles a sequencer step and updates UI.
              * @param {string} track - Track name (bd, sd, hh, cp).
              * @param {number} index - Step index.
              */
             toggleStep(track, index) {
+                this.saveToHistory();
                 this.sequencerState[track][index] = !this.sequencerState[track][index];
                 this.updateSequencerUI(track);
                 this.saveToLocalStorage();
             }
-
             /**
              * Updates the UI for a specific track.
              * @param {string} track - Track name.
@@ -547,16 +768,17 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 const container = document.getElementById(`${track}-pattern`);
                 const isSoloActive = Object.values(this.trackStates).some(state => state.solo);
                 const isEnabled = !isSoloActive || this.trackStates[track].solo;
-                this.sequencerState[track].forEach((active, i) => {
+                const stepCount = this.trackStates[track].steps;
+                for (let i = 0; i < stepCount; i++) {
                     const step = container.children[i];
                     if (step) {
+                        const active = this.sequencerState[track][i];
                         step.classList.toggle('active', active && isEnabled && !this.trackStates[track].muted);
                         step.setAttribute('aria-pressed', active);
                         step.style.opacity = isEnabled && !this.trackStates[track].muted ? '1' : '0.5';
                     }
-                });
+                }
             }
-
             /**
              * Sets up all event listeners with debouncing for performance.
              */
@@ -568,32 +790,55 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                         timeout = setTimeout(() => fn(...args), delay);
                     };
                 };
-
-                // Transport
+                // Transport - اصلاح شده
                 document.getElementById('play-btn').addEventListener('click', () => this.togglePlayback());
                 document.getElementById('stop-btn').addEventListener('click', () => this.stop());
                 document.getElementById('stop-code-btn').addEventListener('click', () => this.stop());
-
+                document.getElementById('undo-btn').addEventListener('click', () => this.undo());
+                document.getElementById('redo-btn').addEventListener('click', () => this.redo());
                 // Code Editor
                 document.getElementById('evaluate-btn').addEventListener('click', () => this.evaluateCode());
                 document.getElementById('clear-code-btn').addEventListener('click', () => {
+                    this.saveToHistory();
                     document.getElementById('code-editor').value = '';
                     this.saveToLocalStorage();
                     this.showNotification('Code cleared', 'success');
                 });
                 document.getElementById('save-code-btn').addEventListener('click', () => this.saveCode());
                 document.getElementById('load-code-btn').addEventListener('click', () => this.loadCode());
-                document.getElementById('code-editor').addEventListener('input', debounce(() => this.saveToLocalStorage(), 500));
-
+                document.getElementById('code-editor').addEventListener('input', debounce(() => {
+                    this.saveToHistory();
+                    this.saveToLocalStorage();
+                }, 500));
                 // Sequencer
                 ['bd', 'sd', 'hh', 'cp'].forEach(track => {
-                    document.getElementById(`mute-${track}`).addEventListener('click', () => this.toggleMute(track));
-                    document.getElementById(`solo-${track}`).addEventListener('click', () => this.toggleSolo(track));
+                    document.getElementById(`mute-${track}`).addEventListener('click', () => {
+                        this.saveToHistory();
+                        this.toggleMute(track);
+                    });
+                    document.getElementById(`solo-${track}`).addEventListener('click', () => {
+                        this.saveToHistory();
+                        this.toggleSolo(track);
+                    });
+                    document.getElementById(`random-${track}`).addEventListener('click', () => {
+                        this.saveToHistory();
+                        this.randomizeTrack(track);
+                    });
+                    document.getElementById(`generate-${track}`).addEventListener('click', () => this.generateTrackCode(track));
+                    document.getElementById(`${track}-steps`).addEventListener('change', (e) => {
+                        this.saveToHistory();
+                        this.changeStepCount(track, parseInt(e.target.value));
+                    });
                 });
-                document.getElementById('sequencer-random').addEventListener('click', () => this.randomizeSequencer());
-                document.getElementById('sequencer-clear').addEventListener('click', () => this.clearSequencer());
+                document.getElementById('sequencer-random').addEventListener('click', () => {
+                    this.saveToHistory();
+                    this.randomizeSequencer();
+                });
+                document.getElementById('sequencer-clear').addEventListener('click', () => {
+                    this.saveToHistory();
+                    this.clearSequencer();
+                });
                 document.getElementById('sequencer-generate').addEventListener('click', () => this.generateSequencerCode());
-
                 // Synth Controls
                 const updateSynthSlider = (id, param, unit = '') => {
                     const slider = document.getElementById(id);
@@ -609,22 +854,34 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 updateSynthSlider('room', 'room');
                 updateSynthSlider('delay', 'delay');
                 document.getElementById('apply-synth').addEventListener('click', () => this.applySynthToCode());
-
                 // Pattern Mix and Presets
                 this.setupMixCheckboxes();
                 Object.keys(this.presets).forEach(key => {
-                    document.getElementById(`preset-${key}`).addEventListener('click', () => this.loadPreset(key));
+                    document.getElementById(`preset-${key}`).addEventListener('click', () => {
+                        this.saveToHistory();
+                        this.loadPreset(key);
+                    });
                 });
-                document.getElementById('mix-combine').addEventListener('click', () => this.combineMix());
-                document.getElementById('mix-random').addEventListener('click', () => this.randomMix());
-
+                document.getElementById('mix-combine').addEventListener('click', () => {
+                    this.saveToHistory();
+                    this.combineMix();
+                });
+                document.getElementById('mix-random').addEventListener('click', () => {
+                    this.saveToHistory();
+                    this.randomMix();
+                });
                 // Pattern Bank
-                document.getElementById('save-pattern-btn').addEventListener('click', () => this.savePattern());
+                document.getElementById('save-pattern-btn').addEventListener('click', () => {
+                    this.saveToHistory();
+                    this.savePattern();
+                });
                 document.getElementById('export-patterns-btn').addEventListener('click', () => this.exportPatterns());
                 document.getElementById('import-patterns-btn').addEventListener('click', () => document.getElementById('import-file').click());
-                document.getElementById('import-file').addEventListener('change', (e) => this.importPatterns(e));
+                document.getElementById('import-file').addEventListener('change', (e) => {
+                    this.saveToHistory();
+                    this.importPatterns(e);
+                });
             }
-
             /**
              * Defines preset patterns for quick loading.
              * @returns {Object} Map of preset codes.
@@ -645,7 +902,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     l: `stack(s('bd hh*2'), s('~ sd hh'), s('cp(5,8)'))`
                 };
             }
-
             /**
              * Sets up the pattern mix checkboxes.
              */
@@ -659,13 +915,61 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     container.appendChild(div);
                 });
             }
-
+            /**
+             * Changes the number of steps for a track and updates the sequencer.
+             * @param {string} track - Track name.
+             * @param {number} count - Number of steps (4, 8, or 16).
+             */
+            changeStepCount(track, count) {
+                this.trackStates[track].steps = count;
+                // Resize sequencer state array, preserving existing steps where possible
+                const current = this.sequencerState[track].slice(0, count);
+                this.sequencerState[track] = Array(count).fill(false);
+                for (let i = 0; i < Math.min(current.length, count); i++) {
+                    this.sequencerState[track][i] = current[i];
+                }
+                this.updateSequencerTrack(track);
+                this.saveToLocalStorage();
+                this.showNotification(`${track.toUpperCase()} set to ${count} steps`, 'success');
+            }
+            /**
+             * Randomizes a single track's sequencer steps.
+             * @param {string} track - Track name.
+             */
+            randomizeTrack(track) {
+                const stepCount = this.trackStates[track].steps;
+                this.sequencerState[track] = Array(stepCount).fill(false).map(() => Math.random() > 0.7);
+                this.updateSequencerUI(track);
+                this.saveToLocalStorage();
+                this.showNotification(`${track.toUpperCase()} randomized`, 'success');
+            }
+            /**
+             * Generates Strudel code for a single track.
+             * @param {string} track - Track name.
+             */
+            generateTrackCode(track) {
+                if (this.trackStates[track].muted || (Object.values(this.trackStates).some(state => state.solo) && !this.trackStates[track].solo)) {
+                    this.showNotification(`${track.toUpperCase()} is muted or not soloed`, 'error');
+                    return;
+                }
+                const stepCount = this.trackStates[track].steps;
+                const steps = this.sequencerState[track].slice(0, stepCount).map(active => active ? 'x' : '~').join(' ');
+                if (!steps.includes('x')) {
+                    this.showNotification(`No active steps in ${track.toUpperCase()}`, 'error');
+                    return;
+                }
+                const code = `s("${track}*${stepCount}").struct("${steps}")`;
+                document.getElementById('code-editor').value = code;
+                this.evaluateCode();
+                this.saveToHistory();
+                this.showNotification(`Code generated for ${track.toUpperCase()}`, 'success');
+            }
             /**
              * Evaluates the code in the editor.
              * @async
              */
             async evaluateCode() {
-                if (!this.strudelReady) {
+                if (!this.strudelReady || !this.strudelAPI) {
                     this.showNotification('Strudel not initialized. Please wait.', 'error');
                     return;
                 }
@@ -678,18 +982,22 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     if (this.currentPattern) {
                         this.stop();
                     }
+                    
+                    // Use the new API
+                    const { evaluate } = this.strudelAPI;
                     this.currentPattern = await evaluate(code);
+                    
                     this.isPlaying = true;
                     document.getElementById('play-btn').classList.add('active');
+                    document.getElementById('play-btn').innerHTML = '<i class="las la-pause"></i> Pause';
                     document.getElementById('evaluate-btn').classList.add('active');
-                    document.getElementById('audio-status').textContent = '🔊 Playing';
+                    document.getElementById('audio-status').innerHTML = '<i class="las la-volume-up"></i> Playing';
                     this.showNotification('Code playing', 'success');
                 } catch (error) {
                     console.error('Code evaluation failed:', error);
                     this.showNotification(`Error: ${error.message}`, 'error');
                 }
             }
-
             /**
              * Toggles playback state.
              */
@@ -700,31 +1008,32 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.evaluateCode();
                 }
             }
-
             /**
              * Stops playback and resets state.
              */
             stop() {
-                if (!this.strudelReady) {
+                if (!this.strudelReady || !this.strudelAPI) {
                     this.showNotification('Strudel not initialized', 'error');
                     return;
                 }
                 try {
-                    if (typeof hush === 'function') {
+                    const { hush } = this.strudelAPI;
+                    if (hush) {
                         hush();
                     }
+                    
                     this.currentPattern = null;
                     this.isPlaying = false;
                     document.getElementById('play-btn').classList.remove('active');
+                    document.getElementById('play-btn').innerHTML = '<i class="las la-play"></i> Play';
                     document.getElementById('evaluate-btn').classList.remove('active');
-                    document.getElementById('audio-status').textContent = '🔊 Ready';
+                    document.getElementById('audio-status').innerHTML = '<i class="las la-volume-up"></i> Ready';
                     this.showNotification('Playback stopped', 'success');
                 } catch (error) {
                     console.error('Stop failed:', error);
                     this.showNotification('Failed to stop playback', 'error');
                 }
             }
-
             /**
              * Loads a preset into the code editor.
              * @param {string} key - Preset key.
@@ -734,7 +1043,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 this.evaluateCode();
                 this.showNotification(`Preset ${key.toUpperCase()} loaded`, 'success');
             }
-
             /**
              * Combines selected patterns from the mix panel.
              */
@@ -749,7 +1057,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 this.evaluateCode();
                 this.showNotification(`${selected.length} patterns combined`, 'success');
             }
-
             /**
              * Selects 3 random patterns and combines them.
              */
@@ -760,7 +1067,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 randomKeys.forEach(key => document.getElementById(`mix-${key}`).checked = true);
                 this.combineMix();
             }
-
             /**
              * Generates Strudel code from the sequencer state.
              */
@@ -772,9 +1078,10 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     if (this.trackStates[track].muted || (isSolo && !this.trackStates[track].solo)) {
                         return;
                     }
-                    const steps = this.sequencerState[track].map(active => active ? 'x' : '~').join(' ');
+                    const stepCount = this.trackStates[track].steps;
+                    const steps = this.sequencerState[track].slice(0, stepCount).map(active => active ? 'x' : '~').join(' ');
                     if (steps.includes('x')) {
-                        patterns.push(`s("${track}*16").struct("${steps}")`);
+                        patterns.push(`s("${track}*${stepCount}").struct("${steps}")`);
                     }
                 });
                 if (patterns.length === 0) {
@@ -784,33 +1091,29 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 const code = `stack(${patterns.join(', ')})`;
                 document.getElementById('code-editor').value = code;
                 this.evaluateCode();
+                this.saveToHistory();
                 this.showNotification('Code generated from sequencer', 'success');
             }
-
             /**
-             * Randomizes the sequencer steps.
+             * Randomizes the sequencer steps for all tracks.
              */
             randomizeSequencer() {
                 ['bd', 'sd', 'hh', 'cp'].forEach(track => {
-                    this.sequencerState[track] = Array(16).fill(false).map(() => Math.random() > 0.7);
-                    this.updateSequencerUI(track);
+                    this.randomizeTrack(track);
                 });
-                this.saveToLocalStorage();
-                this.showNotification('Sequencer randomized', 'success');
             }
-
             /**
-             * Clears the sequencer steps.
+             * Clears the sequencer steps for all tracks.
              */
             clearSequencer() {
                 ['bd', 'sd', 'hh', 'cp'].forEach(track => {
-                    this.sequencerState[track].fill(false);
+                    const stepCount = this.trackStates[track].steps;
+                    this.sequencerState[track].fill(false, 0, stepCount);
                     this.updateSequencerUI(track);
                 });
                 this.saveToLocalStorage();
                 this.showNotification('Sequencer cleared', 'success');
             }
-
             /**
              * Toggles mute state for a track.
              * @param {string} track - Track name.
@@ -823,7 +1126,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 this.showNotification(`${track.toUpperCase()} ${this.trackStates[track].muted ? 'muted' : 'unmuted'}`, 'success');
                 this.saveToLocalStorage();
             }
-
             /**
              * Toggles solo state for a track.
              * @param {string} track - Track name.
@@ -836,7 +1138,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 this.showNotification(`${track.toUpperCase()} ${this.trackStates[track].solo ? 'soloed' : 'unsoloed'}`, 'success');
                 this.saveToLocalStorage();
             }
-
             /**
              * Applies synth parameters to the code editor.
              */
@@ -846,9 +1147,9 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 newCode += `lpf(${this.synthParams.lpf}).lpq(${this.synthParams.lpq}).room(${this.synthParams.room}).delay(${this.synthParams.delay})`;
                 document.getElementById('code-editor').value = newCode;
                 this.evaluateCode();
+                this.saveToHistory();
                 this.showNotification('Synth parameters applied', 'success');
             }
-
             /**
              * Saves the current code to localStorage.
              */
@@ -866,7 +1167,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.showNotification('Failed to save code', 'error');
                 }
             }
-
             /**
              * Loads code from localStorage.
              */
@@ -874,6 +1174,7 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 try {
                     const code = localStorage.getItem('cyberstrudel-code');
                     if (code) {
+                        this.saveToHistory();
                         document.getElementById('code-editor').value = code;
                         this.showNotification('Code loaded', 'success');
                     } else {
@@ -884,7 +1185,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.showNotification('Failed to load code', 'error');
                 }
             }
-
             /**
              * Saves a pattern to the pattern bank.
              */
@@ -909,9 +1209,8 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 this.showNotification(`Pattern "${name}" saved`, 'success');
                 document.getElementById('pattern-name').value = '';
             }
-
             /**
-             * Updates the pattern bank UI.
+             * Updates the pattern bank UI with Play and Mix buttons.
              */
             updatePatternBank() {
                 const container = document.getElementById('pattern-bank');
@@ -922,17 +1221,64 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 }
                 this.savedPatterns.forEach((pattern, name) => {
                     const div = document.createElement('div');
-                    div.style = 'background: rgba(0,0,0,0.3); padding: 10px; margin: 5px 0; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;';
+                    div.style = 'background: rgba(0,0,0,0.3); padding: clamp(8px, 1.5vw, 10px); margin: clamp(3px, 1vw, 5px) 0; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;';
                     div.innerHTML = `
                         <span>${name}</span>
                         <div>
-                            <button class="cyber-btn" onclick="app.loadPattern('${name.replace(/'/g, "\\'")}')" aria-label="Load pattern ${name}">Load</button>
-                            <button class="cyber-btn" style="background: var(--error-red);" onclick="app.deletePattern('${name.replace(/'/g, "\\'")}')" aria-label="Delete pattern ${name}">Delete</button>
+                            <button class="cyber-btn" onclick="app.playPattern('${name.replace(/'/g, "\\'")}')" aria-label="Play pattern ${name}"><i class="las la-play"></i> Play</button>
+                            <button class="cyber-btn" onclick="app.mixPattern('${name.replace(/'/g, "\\'")}')" aria-label="Mix pattern ${name} to code"><i class="las la-random"></i> Mix</button>
+                            <button class="cyber-btn" onclick="app.loadPattern('${name.replace(/'/g, "\\'")}')" aria-label="Load pattern ${name}"><i class="las la-folder-open"></i> Load</button>
+                            <button class="cyber-btn" style="background: var(--error-red);" onclick="app.deletePattern('${name.replace(/'/g, "\\'")}')" aria-label="Delete pattern ${name}"><i class="las la-trash"></i> Delete</button>
                         </div>`;
                     container.appendChild(div);
                 });
             }
-
+            /**
+             * Plays a saved pattern directly.
+             * @param {string} name - Pattern name.
+             */
+            async playPattern(name) {
+                const pattern = this.savedPatterns.get(name);
+                if (pattern && pattern.code) {
+                    try {
+                        if (this.currentPattern) {
+                            this.stop();
+                        }
+                        
+                        const { evaluate } = this.strudelAPI;
+                        this.currentPattern = await evaluate(pattern.code);
+                        
+                        this.isPlaying = true;
+                        document.getElementById('play-btn').classList.add('active');
+                        document.getElementById('play-btn').innerHTML = '<i class="las la-pause"></i> Pause';
+                        document.getElementById('evaluate-btn').classList.add('active');
+                        document.getElementById('audio-status').innerHTML = '<i class="las la-volume-up"></i> Playing';
+                        this.showNotification(`Playing pattern "${name}"`, 'success');
+                    } catch (error) {
+                        console.error('Pattern playback failed:', error);
+                        this.showNotification(`Error playing pattern "${name}": ${error.message}`, 'error');
+                    }
+                } else {
+                    this.showNotification(`Pattern "${name}" has no valid code`, 'error');
+                }
+            }
+            /**
+             * Mixes a saved pattern into the code editor.
+             * @param {string} name - Pattern name.
+             */
+            mixPattern(name) {
+                const pattern = this.savedPatterns.get(name);
+                if (pattern && pattern.code) {
+                    const currentCode = document.getElementById('code-editor').value.trim();
+                    const newCode = currentCode ? `stack(${currentCode}, ${pattern.code})` : pattern.code;
+                    document.getElementById('code-editor').value = newCode;
+                    this.evaluateCode();
+                    this.saveToHistory();
+                    this.showNotification(`Pattern "${name}" mixed to code`, 'success');
+                } else {
+                    this.showNotification(`Pattern "${name}" has no valid code`, 'error');
+                }
+            }
             /**
              * Loads a saved pattern.
              * @param {string} name - Pattern name.
@@ -943,11 +1289,14 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.sequencerState = JSON.parse(JSON.stringify(pattern.sequencerState));
                     this.trackStates = JSON.parse(JSON.stringify(pattern.trackStates));
                     document.getElementById('code-editor').value = pattern.code || '';
-                    ['bd', 'sd', 'hh', 'cp'].forEach(track => this.updateSequencerUI(track));
+                    ['bd', 'sd', 'hh', 'cp'].forEach(track => {
+                        document.getElementById(`${track}-steps`).value = this.trackStates[track].steps;
+                        this.updateSequencerTrack(track);
+                    });
                     this.showNotification(`Pattern "${name}" loaded`, 'success');
+                    this.saveToHistory();
                 }
             }
-
             /**
              * Deletes a saved pattern.
              * @param {string} name - Pattern name.
@@ -957,8 +1306,8 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 this.updatePatternBank();
                 this.saveToLocalStorage();
                 this.showNotification(`Pattern "${name}" deleted`, 'success');
+                this.saveToHistory();
             }
-
             /**
              * Exports all patterns as a JSON file.
              */
@@ -978,7 +1327,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.showNotification('Failed to export patterns', 'error');
                 }
             }
-
             /**
              * Imports patterns from a JSON file.
              * @param {Event} event - File input event.
@@ -1002,7 +1350,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 reader.readAsText(file);
                 event.target.value = ''; // Reset file input
             }
-
             /**
              * Saves current state to localStorage.
              */
@@ -1020,7 +1367,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.showNotification('Failed to save state', 'error');
                 }
             }
-
             /**
              * Loads saved state from localStorage.
              */
@@ -1038,7 +1384,8 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     }
                     this.updatePatternBank();
                     ['bd', 'sd', 'hh', 'cp'].forEach(track => {
-                        this.updateSequencerUI(track);
+                        document.getElementById(`${track}-steps`).value = this.trackStates[track].steps;
+                        this.updateSequencerTrack(track);
                         document.getElementById(`mute-${track}`).classList.toggle('active', this.trackStates[track].muted);
                         document.getElementById(`mute-${track}`).setAttribute('aria-pressed', this.trackStates[track].muted);
                         document.getElementById(`solo-${track}`).classList.toggle('active', this.trackStates[track].solo);
@@ -1055,7 +1402,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.showNotification('Failed to load saved state', 'error');
                 }
             }
-
             /**
              * Shows a notification with the specified message and type.
              * @param {string} message - Notification message.
@@ -1069,7 +1415,6 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 setTimeout(() => notif.classList.remove('show'), 3000);
             }
         }
-
         document.addEventListener('DOMContentLoaded', () => {
             window.app = new CyberStrudel();
         });
