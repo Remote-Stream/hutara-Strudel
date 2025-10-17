@@ -6,6 +6,8 @@
     <title>CyberSynth Strudel - Advanced Live Coding Studio</title>
     <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- اضافه کردن Line Awesome CSS -->
+    <link rel="stylesheet" href="assets/css/line-awesome.min.css">
     <style>
         :root {
             --primary-cyan: #00ffff;
@@ -120,6 +122,9 @@
         }
         .cyber-btn.active {
             background: var(--secondary-magenta);
+        }
+        .cyber-btn i {
+            margin-right: 5px;
         }
         .code-editor-panel {
             grid-column: 1 / -1;
@@ -336,27 +341,27 @@
     <div class="cyber-grid"></div>
     <div class="container">
         <header>
-            <h1>🎛️ CyberSynth Strudel</h1>
+            <h1><i class="las la-sliders-h"></i> CyberSynth Strudel</h1>
             <p>Advanced Live Coding Music Studio</p>
         </header>
         <div class="status-bar">
-            <span>Status: <span id="audio-status">🔊 Ready</span></span>
+            <span>Status: <span id="audio-status"><i class="las la-volume-up"></i> Ready</span></span>
         </div>
         <div class="transport">
-            <button class="cyber-btn" id="play-btn" aria-label="Play or pause music">▶️ Play</button>
-            <button class="cyber-btn" id="stop-btn" aria-label="Stop music">⏹️ Stop</button>
-            <button class="cyber-btn" id="undo-btn" aria-label="Undo last action">↺ Undo</button>
-            <button class="cyber-btn" id="redo-btn" aria-label="Redo last action">↻ Redo</button>
+            <button class="cyber-btn" id="play-btn" aria-label="Play or pause music"><i class="las la-play"></i> Play</button>
+            <button class="cyber-btn" id="stop-btn" aria-label="Stop music"><i class="las la-stop"></i> Stop</button>
+            <button class="cyber-btn" id="undo-btn" aria-label="Undo last action"><i class="las la-undo"></i> Undo</button>
+            <button class="cyber-btn" id="redo-btn" aria-label="Redo last action"><i class="las la-redo"></i> Redo</button>
         </div>
         <div class="main-grid">
             <div class="panel sequencer-container">
-                <h2>🎵 Advanced Sequencer</h2>
+                <h2><i class="las la-music"></i> Advanced Sequencer</h2>
                 <div class="track-container" id="bd-track">
                     <div class="track-header">
                         <span class="track-name">KICK</span>
                         <div>
-                            <button class="cyber-btn" id="mute-bd" aria-label="Mute kick track">Mute</button>
-                            <button class="cyber-btn" id="solo-bd" aria-label="Solo kick track">Solo</button>
+                            <button class="cyber-btn" id="mute-bd" aria-label="Mute kick track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-bd" aria-label="Solo kick track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="bd-pattern"></div>
@@ -366,16 +371,16 @@
                             <option value="8">8 Steps</option>
                             <option value="16" selected>16 Steps</option>
                         </select>
-                        <button class="cyber-btn" id="random-bd" aria-label="Randomize kick track">🎲 Randomize</button>
-                        <button class="cyber-btn" id="generate-bd" aria-label="Generate code for kick track">📋 Generate</button>
+                        <button class="cyber-btn" id="random-bd" aria-label="Randomize kick track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-bd" aria-label="Generate code for kick track"><i class="las la-code"></i> Generate</button>
                     </div>
                 </div>
                 <div class="track-container" id="sd-track">
                     <div class="track-header">
                         <span class="track-name">SNARE</span>
                         <div>
-                            <button class="cyber-btn" id="mute-sd" aria-label="Mute snare track">Mute</button>
-                            <button class="cyber-btn" id="solo-sd" aria-label="Solo snare track">Solo</button>
+                            <button class="cyber-btn" id="mute-sd" aria-label="Mute snare track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-sd" aria-label="Solo snare track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="sd-pattern"></div>
@@ -385,16 +390,16 @@
                             <option value="8">8 Steps</option>
                             <option value="16" selected>16 Steps</option>
                         </select>
-                        <button class="cyber-btn" id="random-sd" aria-label="Randomize snare track">🎲 Randomize</button>
-                        <button class="cyber-btn" id="generate-sd" aria-label="Generate code for snare track">📋 Generate</button>
+                        <button class="cyber-btn" id="random-sd" aria-label="Randomize snare track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-sd" aria-label="Generate code for snare track"><i class="las la-code"></i> Generate</button>
                     </div>
                 </div>
                 <div class="track-container" id="hh-track">
                     <div class="track-header">
                         <span class="track-name">HI-HAT</span>
                         <div>
-                            <button class="cyber-btn" id="mute-hh" aria-label="Mute hi-hat track">Mute</button>
-                            <button class="cyber-btn" id="solo-hh" aria-label="Solo hi-hat track">Solo</button>
+                            <button class="cyber-btn" id="mute-hh" aria-label="Mute hi-hat track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-hh" aria-label="Solo hi-hat track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="hh-pattern"></div>
@@ -404,16 +409,16 @@
                             <option value="8">8 Steps</option>
                             <option value="16" selected>16 Steps</option>
                         </select>
-                        <button class="cyber-btn" id="random-hh" aria-label="Randomize hi-hat track">🎲 Randomize</button>
-                        <button class="cyber-btn" id="generate-hh" aria-label="Generate code for hi-hat track">📋 Generate</button>
+                        <button class="cyber-btn" id="random-hh" aria-label="Randomize hi-hat track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-hh" aria-label="Generate code for hi-hat track"><i class="las la-code"></i> Generate</button>
                     </div>
                 </div>
                 <div class="track-container" id="cp-track">
                     <div class="track-header">
                         <span class="track-name">CLAP</span>
                         <div>
-                            <button class="cyber-btn" id="mute-cp" aria-label="Mute clap track">Mute</button>
-                            <button class="cyber-btn" id="solo-cp" aria-label="Solo clap track">Solo</button>
+                            <button class="cyber-btn" id="mute-cp" aria-label="Mute clap track"><i class="las la-volume-mute"></i> Mute</button>
+                            <button class="cyber-btn" id="solo-cp" aria-label="Solo clap track"><i class="las la-headphones"></i> Solo</button>
                         </div>
                     </div>
                     <div class="pattern-grid" id="cp-pattern"></div>
@@ -423,35 +428,35 @@
                             <option value="8">8 Steps</option>
                             <option value="16" selected>16 Steps</option>
                         </select>
-                        <button class="cyber-btn" id="random-cp" aria-label="Randomize clap track">🎲 Randomize</button>
-                        <button class="cyber-btn" id="generate-cp" aria-label="Generate code for clap track">📋 Generate</button>
+                        <button class="cyber-btn" id="random-cp" aria-label="Randomize clap track"><i class="las la-dice"></i> Randomize</button>
+                        <button class="cyber-btn" id="generate-cp" aria-label="Generate code for clap track"><i class="las la-code"></i> Generate</button>
                     </div>
                 </div>
                 <div class="code-controls">
-                    <button class="cyber-btn" id="sequencer-random" aria-label="Randomize all sequencer tracks">🎲 Randomize All</button>
-                    <button class="cyber-btn" id="sequencer-clear" aria-label="Clear all sequencer tracks">🧹 Clear All</button>
-                    <button class="cyber-btn" id="sequencer-generate" aria-label="Generate code from all sequencer tracks">📋 Generate All</button>
+                    <button class="cyber-btn" id="sequencer-random" aria-label="Randomize all sequencer tracks"><i class="las la-dice"></i> Randomize All</button>
+                    <button class="cyber-btn" id="sequencer-clear" aria-label="Clear all sequencer tracks"><i class="las la-broom"></i> Clear All</button>
+                    <button class="cyber-btn" id="sequencer-generate" aria-label="Generate code from all sequencer tracks"><i class="las la-code"></i> Generate All</button>
                 </div>
             </div>
             <div class="panel code-editor-panel">
-                <h2>💻 Live Code Editor</h2>
+                <h2><i class="las la-terminal"></i> Live Code Editor</h2>
                 <textarea id="code-editor" class="code-editor" spellcheck="false" aria-label="Live code editor for music patterns" placeholder="// Write Strudel code, e.g.:
 s('bd*2, hh(3,8)').jux(rev)
 note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 <div class="code-controls">
                     <div>
-                        <button class="cyber-btn" id="evaluate-btn" aria-label="Evaluate code">▶️ Evaluate</button>
-                        <button class="cyber-btn" id="stop-code-btn" aria-label="Stop code playback">⏹️ Stop</button>
-                        <button class="cyber-btn" id="clear-code-btn" aria-label="Clear code editor">🧹 Clear</button>
+                        <button class="cyber-btn" id="evaluate-btn" aria-label="Evaluate code"><i class="las la-play"></i> Evaluate</button>
+                        <button class="cyber-btn" id="stop-code-btn" aria-label="Stop code playback"><i class="las la-stop"></i> Stop</button>
+                        <button class="cyber-btn" id="clear-code-btn" aria-label="Clear code editor"><i class="las la-broom"></i> Clear</button>
                     </div>
                     <div>
-                        <button class="cyber-btn" id="save-code-btn" aria-label="Save code">💾 Save</button>
-                        <button class="cyber-btn" id="load-code-btn" aria-label="Load code">📂 Load</button>
+                        <button class="cyber-btn" id="save-code-btn" aria-label="Save code"><i class="las la-save"></i> Save</button>
+                        <button class="cyber-btn" id="load-code-btn" aria-label="Load code"><i class="las la-folder-open"></i> Load</button>
                     </div>
                 </div>
             </div>
             <div class="panel">
-                <h2>🎛️ Synth Controls</h2>
+                <h2><i class="las la-sliders-h"></i> Synth Controls</h2>
                 <div class="synth-controls">
                     <div class="control-group">
                         <h3>Filter</h3>
@@ -480,44 +485,44 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                         </div>
                     </div>
                 </div>
-                <button class="cyber-btn" id="apply-synth" aria-label="Apply synth parameters to code">Apply to Code</button>
+                <button class="cyber-btn" id="apply-synth" aria-label="Apply synth parameters to code"><i class="las la-check"></i> Apply to Code</button>
             </div>
             <div class="panel">
-                <h2>🔀 Pattern Mix</h2>
+                <h2><i class="las la-random"></i> Pattern Mix</h2>
                 <div class="mix-checkboxes" id="mix-checkboxes"></div>
                 <div class="code-controls">
-                    <button class="cyber-btn" id="mix-combine" aria-label="Combine selected patterns">Combine (Stack)</button>
-                    <button class="cyber-btn" id="mix-random" aria-label="Select 3 random patterns">Random 3</button>
+                    <button class="cyber-btn" id="mix-combine" aria-label="Combine selected patterns"><i class="las la-layer-group"></i> Combine (Stack)</button>
+                    <button class="cyber-btn" id="mix-random" aria-label="Select 3 random patterns"><i class="las la-dice-three"></i> Random 3</button>
                 </div>
             </div>
             <div class="panel">
-                <h2>📋 Presets</h2>
+                <h2><i class="las la-bookmark"></i> Presets</h2>
                 <div class="presets-grid">
-                    <button class="cyber-btn" id="preset-a" aria-label="Load preset A: Bass Drum">A: Bass Drum</button>
-                    <button class="cyber-btn" id="preset-b" aria-label="Load preset B: Double Beat">B: Double Beat</button>
-                    <button class="cyber-btn" id="preset-c" aria-label="Load preset C: With Snare">C: With Snare</button>
-                    <button class="cyber-btn" id="preset-d" aria-label="Load preset D: Melody">D: Melody</button>
-                    <button class="cyber-btn" id="preset-e" aria-label="Load preset E: Hats">E: Hats</button>
-                    <button class="cyber-btn" id="preset-f" aria-label="Load preset F: Combined">F: Combined</button>
-                    <button class="cyber-btn" id="preset-g" aria-label="Load preset G: Bass Line">G: Bass Line</button>
-                    <button class="cyber-btn" id="preset-h" aria-label="Load preset H: Percussion">H: Percussion</button>
-                    <button class="cyber-btn" id="preset-i" aria-label="Load preset I: Arpeggio">I: Arpeggio</button>
-                    <button class="cyber-btn" id="preset-j" aria-label="Load preset J: Effects">J: Effects</button>
-                    <button class="cyber-btn" id="preset-k" aria-label="Load preset K: Synth Wave">K: Synth Wave</button>
-                    <button class="cyber-btn" id="preset-l" aria-label="Load preset L: Electronic Drum">L: Electronic Drum</button>
+                    <button class="cyber-btn" id="preset-a" aria-label="Load preset A: Bass Drum"><i class="las la-drum"></i> A: Bass Drum</button>
+                    <button class="cyber-btn" id="preset-b" aria-label="Load preset B: Double Beat"><i class="las la-drum"></i> B: Double Beat</button>
+                    <button class="cyber-btn" id="preset-c" aria-label="Load preset C: With Snare"><i class="las la-drum"></i> C: With Snare</button>
+                    <button class="cyber-btn" id="preset-d" aria-label="Load preset D: Melody"><i class="las la-music"></i> D: Melody</button>
+                    <button class="cyber-btn" id="preset-e" aria-label="Load preset E: Hats"><i class="las la-drum"></i> E: Hats</button>
+                    <button class="cyber-btn" id="preset-f" aria-label="Load preset F: Combined"><i class="las la-layer-group"></i> F: Combined</button>
+                    <button class="cyber-btn" id="preset-g" aria-label="Load preset G: Bass Line"><i class="las la-drum"></i> G: Bass Line</button>
+                    <button class="cyber-btn" id="preset-h" aria-label="Load preset H: Percussion"><i class="las la-drum"></i> H: Percussion</button>
+                    <button class="cyber-btn" id="preset-i" aria-label="Load preset I: Arpeggio"><i class="las la-music"></i> I: Arpeggio</button>
+                    <button class="cyber-btn" id="preset-j" aria-label="Load preset J: Effects"><i class="las la-sliders-h"></i> J: Effects</button>
+                    <button class="cyber-btn" id="preset-k" aria-label="Load preset K: Synth Wave"><i class="las la-wave-square"></i> K: Synth Wave</button>
+                    <button class="cyber-btn" id="preset-l" aria-label="Load preset L: Electronic Drum"><i class="las la-drum"></i> L: Electronic Drum</button>
                 </div>
             </div>
             </div>
             <div class="panel">
-                <h2>💾 Pattern Bank</h2>
-                <div style="margin-bottom: clamp(5px, 1vw, 10px);">
-                    <input type="text" id="pattern-name" placeholder="Pattern Name..." style="background: rgba(0,0,0,0.8); color: var(--primary-cyan); border: 1px solid var(--primary-cyan); padding: clamp(6px, 1.5vw, 8px); width: 100%; font-size: clamp(0.8rem, 2vw, 0.9rem);" aria-label="Pattern name input">
-                    <button class="cyber-btn" id="save-pattern-btn" aria-label="Save pattern">Save Pattern</button>
+                <h2><i class="las la-database"></i> Pattern Bank</h2>
+                <div style="margin-bottom: clamp(15px, 1vw, 10px); ">
+                    <input type="text" id="pattern-name" placeholder="Pattern Name..." style="background: rgba(0,0,0,0.8); color: var(--primary-cyan); border: 1px solid var(--primary-cyan); padding: clamp(6px, 1.5vw, 8px); width: 100%; font-size: clamp(0.8rem, 2vw, 0.9rem); margin-bottom: clamp(15px, 1vw, 10px)" aria-label="Pattern name input">
+                    <button class="cyber-btn " id="save-pattern-btn" aria-label="Save pattern"><i class="las la-save "></i> Save Pattern</button>
                 </div>
                 <div id="pattern-bank" style="max-height: clamp(300px, 50vh, 350px); overflow-y: auto;"></div>
-                <div style="margin-top: clamp(5px, 1vw, 10px);">
-                    <button class="cyber-btn" id="export-patterns-btn" aria-label="Export all patterns">📤 Export All</button>
-                    <button class="cyber-btn" id="import-patterns-btn" aria-label="Import patterns">📥 Import</button>
+                <div style="margin-top: clamp(5px, 1vw, 10px); ">
+                    <button class="cyber-btn" id="export-patterns-btn" aria-label="Export all patterns"><i class="las la-file-export"></i> Export All</button>
+                    <button class="cyber-btn" id="import-patterns-btn" aria-label="Import patterns"><i class="las la-file-import"></i> Import</button>
                     <input type="file" id="import-file" accept=".json" style="display: none;" aria-label="Import pattern file">
                 </div>
             </div>
@@ -944,7 +949,7 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.isPlaying = true;
                     document.getElementById('play-btn').classList.add('active');
                     document.getElementById('evaluate-btn').classList.add('active');
-                    document.getElementById('audio-status').textContent = '🔊 Playing';
+                    document.getElementById('audio-status').textContent = '<i class="las la-volume-up"></i> Playing';
                     this.showNotification('Code playing', 'success');
                 } catch (error) {
                     console.error('Code evaluation failed:', error);
@@ -977,7 +982,7 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     this.isPlaying = false;
                     document.getElementById('play-btn').classList.remove('active');
                     document.getElementById('evaluate-btn').classList.remove('active');
-                    document.getElementById('audio-status').textContent = '🔊 Ready';
+                    document.getElementById('audio-status').textContent = '<i class="las la-volume-up"></i> Ready';
                     this.showNotification('Playback stopped', 'success');
                 } catch (error) {
                     console.error('Stop failed:', error);
@@ -1175,10 +1180,10 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     div.innerHTML = `
                         <span>${name}</span>
                         <div>
-                            <button class="cyber-btn" onclick="app.playPattern('${name.replace(/'/g, "\\'")}')" aria-label="Play pattern ${name}">▶️ Play</button>
-                            <button class="cyber-btn" onclick="app.mixPattern('${name.replace(/'/g, "\\'")}')" aria-label="Mix pattern ${name} to code">🔀 Mix</button>
-                            <button class="cyber-btn" onclick="app.loadPattern('${name.replace(/'/g, "\\'")}')" aria-label="Load pattern ${name}">Load</button>
-                            <button class="cyber-btn" style="background: var(--error-red);" onclick="app.deletePattern('${name.replace(/'/g, "\\'")}')" aria-label="Delete pattern ${name}">Delete</button>
+                            <button class="cyber-btn" onclick="app.playPattern('${name.replace(/'/g, "\\'")}')" aria-label="Play pattern ${name}"><i class="las la-play"></i> Play</button>
+                            <button class="cyber-btn" onclick="app.mixPattern('${name.replace(/'/g, "\\'")}')" aria-label="Mix pattern ${name} to code"><i class="las la-random"></i> Mix</button>
+                            <button class="cyber-btn" onclick="app.loadPattern('${name.replace(/'/g, "\\'")}')" aria-label="Load pattern ${name}"><i class="las la-folder-open"></i> Load</button>
+                            <button class="cyber-btn" style="background: var(--error-red);" onclick="app.deletePattern('${name.replace(/'/g, "\\'")}')" aria-label="Delete pattern ${name}"><i class="las la-trash"></i> Delete</button>
                         </div>`;
                     container.appendChild(div);
                 });
@@ -1198,7 +1203,7 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                         this.isPlaying = true;
                         document.getElementById('play-btn').classList.add('active');
                         document.getElementById('evaluate-btn').classList.add('active');
-                        document.getElementById('audio-status').textContent = '🔊 Playing';
+                        document.getElementById('audio-status').textContent = '<i class="las la-volume-up"></i> Playing';
                         this.showNotification(`Playing pattern "${name}"`, 'success');
                     } catch (error) {
                         console.error('Pattern playback failed:', error);
