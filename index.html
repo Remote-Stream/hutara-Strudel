@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberSynth Strudel - Advanced Live Coding Studio</title>
-    <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
+    <script src="https://unpkg.com/@strudel/web@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <!-- اضافه کردن Line Awesome CSS -->
-    <link rel="stylesheet" href="assets/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <style>
         :root {
             --primary-cyan: #00ffff;
@@ -348,10 +348,10 @@
             <span>Status: <span id="audio-status"><i class="las la-volume-up"></i> Ready</span></span>
         </div>
         <div class="transport">
-            <button class="cyber-btn" id="play-btn" aria-label="Play or pause music"><i class="las la-play"></i> Play</button>
-            <button class="cyber-btn" id="stop-btn" aria-label="Stop music"><i class="las la-stop"></i> Stop</button>
-            <button class="cyber-btn" id="undo-btn" aria-label="Undo last action"><i class="las la-undo"></i> Undo</button>
-            <button class="cyber-btn" id="redo-btn" aria-label="Redo last action"><i class="las la-redo"></i> Redo</button>
+            <button class="cyber-btn" id="play-btn" aria-label="Play or pause music"><i class="las la-play" style="font-size: 1.5rem;"></i> Play</button>
+            <button class="cyber-btn" id="stop-btn" aria-label="Stop playback"><i class="las la-stop" style="font-size: 1.5rem;"></i> Stop</button>
+            <button class="cyber-btn" id="undo-btn" aria-label="Undo last action"><i class="las la-undo" style="font-size: 1.5rem;"></i> Undo</button>
+            <button class="cyber-btn" id="redo-btn" aria-label="Redo last action"><i class="las la-redo" style="font-size: 1.5rem;"></i> Redo</button>
         </div>
         <div class="main-grid">
             <div class="panel sequencer-container">
@@ -433,9 +433,9 @@
                     </div>
                 </div>
                 <div class="code-controls">
-                    <button class="cyber-btn" id="sequencer-random" aria-label="Randomize all sequencer tracks"><i class="las la-dice"></i> Randomize All</button>
+                    <button class="cyber-btn" id="sequencer-random" aria-label="Randomize all sequencer tracks"><i class="las la-dice" style="font-size: 1.5rem;"></i> Randomize All</button>
                     <button class="cyber-btn" id="sequencer-clear" aria-label="Clear all sequencer tracks"><i class="las la-broom"></i> Clear All</button>
-                    <button class="cyber-btn" id="sequencer-generate" aria-label="Generate code from all sequencer tracks"><i class="las la-code"></i> Generate All</button>
+                    <button class="cyber-btn" id="sequencer-generate" aria-label="Generate code from all sequencer tracks"><i class="las la-code" ></i> Generate All</button>
                 </div>
             </div>
             <div class="panel code-editor-panel">
@@ -445,8 +445,8 @@ s('bd*2, hh(3,8)').jux(rev)
 note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 <div class="code-controls">
                     <div>
-                        <button class="cyber-btn" id="evaluate-btn" aria-label="Evaluate code"><i class="las la-play"></i> Evaluate</button>
-                        <button class="cyber-btn" id="stop-code-btn" aria-label="Stop code playback"><i class="las la-stop"></i> Stop</button>
+                        <button class="cyber-btn" id="evaluate-btn" aria-label="Evaluate code"><i class="las la-play" style="font-size: 1.5rem;"></i> Evaluate</button>
+                        <button class="cyber-btn" id="stop-code-btn" aria-label="Stop code playback"><i class="las la-stop" style="font-size: 1.5rem;" ></i> Stop</button>
                         <button class="cyber-btn" id="clear-code-btn" aria-label="Clear code editor"><i class="las la-broom"></i> Clear</button>
                     </div>
                     <div>
@@ -517,7 +517,7 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 <h2><i class="las la-database"></i> Pattern Bank</h2>
                 <div style="margin-bottom: clamp(15px, 1vw, 10px); ">
                     <input type="text" id="pattern-name" placeholder="Pattern Name..." style="background: rgba(0,0,0,0.8); color: var(--primary-cyan); border: 1px solid var(--primary-cyan); padding: clamp(6px, 1.5vw, 8px); width: 100%; font-size: clamp(0.8rem, 2vw, 0.9rem); margin-bottom: clamp(15px, 1vw, 10px)" aria-label="Pattern name input">
-                    <button class="cyber-btn " id="save-pattern-btn" aria-label="Save pattern"><i class="las la-save "></i> Save Pattern</button>
+                    <button class="cyber-btn " id="save-pattern-btn" aria-label="Save pattern"><i class="las la-save " style="font-size: 1.5rem;"></i> Save Pattern</button>
                 </div>
                 <div id="pattern-bank" style="max-height: clamp(300px, 50vh, 350px); overflow-y: auto;"></div>
                 <div style="margin-top: clamp(5px, 1vw, 10px); ">
@@ -564,6 +564,8 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                 this.history = [];
                 this.historyIndex = -1;
                 this.maxHistory = 50;
+                // Store Strudel API references
+                this.strudelAPI = null;
                 this.init();
             }
             /**
@@ -590,17 +592,26 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
              */
             async initStrudel() {
                 try {
+                    // Get the global Strudel API
+                    const { initStrudel, samples, setCps } = window.strudel;
+                    
+                    // Store API reference
+                    this.strudelAPI = window.strudel;
+                    
                     await initStrudel({
                         prebake: async () => {
                             try {
                                 await samples('github:tidalcycles/dirt-samples');
                             } catch (error) {
-                                throw new Error('Failed to load samples: ' + error.message);
+                                console.warn('Could not load default samples:', error);
+                                // Continue even if samples fail to load
                             }
                         }
                     });
-                    if (typeof setCps === 'function') {
-                        setCps(120 / 60 / 4); // Set default BPM to 120
+                    
+                    // Set default BPM to 120
+                    if (setCps) {
+                        setCps(120 / 60 / 4);
                     }
                 } catch (error) {
                     throw new Error('Strudel initialization failed: ' + error.message);
@@ -753,7 +764,7 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                         timeout = setTimeout(() => fn(...args), delay);
                     };
                 };
-                // Transport
+                // Transport - اصلاح شده
                 document.getElementById('play-btn').addEventListener('click', () => this.togglePlayback());
                 document.getElementById('stop-btn').addEventListener('click', () => this.stop());
                 document.getElementById('stop-code-btn').addEventListener('click', () => this.stop());
@@ -932,7 +943,7 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
              * @async
              */
             async evaluateCode() {
-                if (!this.strudelReady) {
+                if (!this.strudelReady || !this.strudelAPI) {
                     this.showNotification('Strudel not initialized. Please wait.', 'error');
                     return;
                 }
@@ -945,11 +956,16 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                     if (this.currentPattern) {
                         this.stop();
                     }
+                    
+                    // Use the new API
+                    const { evaluate } = this.strudelAPI;
                     this.currentPattern = await evaluate(code);
+                    
                     this.isPlaying = true;
                     document.getElementById('play-btn').classList.add('active');
+                    document.getElementById('play-btn').innerHTML = '<i class="las la-pause"></i> Pause';
                     document.getElementById('evaluate-btn').classList.add('active');
-                    document.getElementById('audio-status').textContent = '<i class="las la-volume-up"></i> Playing';
+                    document.getElementById('audio-status').innerHTML = '<i class="las la-volume-up"></i> Playing';
                     this.showNotification('Code playing', 'success');
                 } catch (error) {
                     console.error('Code evaluation failed:', error);
@@ -970,19 +986,22 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
              * Stops playback and resets state.
              */
             stop() {
-                if (!this.strudelReady) {
+                if (!this.strudelReady || !this.strudelAPI) {
                     this.showNotification('Strudel not initialized', 'error');
                     return;
                 }
                 try {
-                    if (typeof hush === 'function') {
+                    const { hush } = this.strudelAPI;
+                    if (hush) {
                         hush();
                     }
+                    
                     this.currentPattern = null;
                     this.isPlaying = false;
                     document.getElementById('play-btn').classList.remove('active');
+                    document.getElementById('play-btn').innerHTML = '<i class="las la-play"></i> Play';
                     document.getElementById('evaluate-btn').classList.remove('active');
-                    document.getElementById('audio-status').textContent = '<i class="las la-volume-up"></i> Ready';
+                    document.getElementById('audio-status').innerHTML = '<i class="las la-volume-up"></i> Ready';
                     this.showNotification('Playback stopped', 'success');
                 } catch (error) {
                     console.error('Stop failed:', error);
@@ -1199,11 +1218,15 @@ note('c3 eb3 g3').sound('sawtooth').lpf(800)"></textarea>
                         if (this.currentPattern) {
                             this.stop();
                         }
+                        
+                        const { evaluate } = this.strudelAPI;
                         this.currentPattern = await evaluate(pattern.code);
+                        
                         this.isPlaying = true;
                         document.getElementById('play-btn').classList.add('active');
+                        document.getElementById('play-btn').innerHTML = '<i class="las la-pause"></i> Pause';
                         document.getElementById('evaluate-btn').classList.add('active');
-                        document.getElementById('audio-status').textContent = '<i class="las la-volume-up"></i> Playing';
+                        document.getElementById('audio-status').innerHTML = '<i class="las la-volume-up"></i> Playing';
                         this.showNotification(`Playing pattern "${name}"`, 'success');
                     } catch (error) {
                         console.error('Pattern playback failed:', error);
